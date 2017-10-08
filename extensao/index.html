@@ -3,10 +3,14 @@
   <head>
     <meta charset="utf-8">
     <title>Login</title>
-    <link rel="stylesheet" href="./css/reset.css">
-    <link rel="stylesheet" href="./css/index/desktop.css">
+    <link rel="stylesheet" href="./css/reset.css" />
+    <link rel="stylesheet" href="./css/index/desktop.css" />
+    <link rel="stylesheet" type="text/css" href="./js/plugins/message-plugin.css" />
+
     <script src="./js/jquery.min.js"></script>
+    <script src="./js/plugins/message-plugin.js"></script>
     <script src="./js/index/desktop.js"></script>
+    
   </head>
   <body class="fadeIn">
     <form class="form" method="POST" action="./controller/usuario_ctrl.php?act=login">
@@ -19,6 +23,9 @@
         <label class="labelSenha">Senha</label>
         <input class="inputSenha" type="password" name="senha" placeholder="Digite Sua Senha" required>
       </div>
+      <!-- para a chamada do plugin -->
+      <div class="message"></div>
+
       <input class="send" type="submit" name="send" value="Entrar">
       <a class="registrar" href="./cadastro.html">Registrar</a>
     </form>

@@ -1,5 +1,21 @@
 $(function(){
+  function getUrlVars() {
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++) {
+      hash = hashes[i].split('=');
+      vars.push(hash[0]);
+      vars[hash[0]] = hash[1];
+    }
+    return vars;
+  }
 
+  var vars = getUrlVars();
+
+  if (vars["msg"]=="loginIncorreto") {
+    $(".message").message({message:"Usuário ou senha incorretos!", class:"danger"});
+  }
+  
   //efeito formulário
   $(".inputEmail").on("focus", function(){
     $(".labelEmail").css("color","#696969");
