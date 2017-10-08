@@ -5,6 +5,7 @@
   margin: 10px 0 15px;
   box-sizing: border-box;
   position: relative;
+  border-radius: 3px;
 }
 
 .message-close {
@@ -17,8 +18,13 @@
   font-weight: bold;
 }
 
+.message .message-close:hover {
+  font-size: 1.1em;
+  right: 10px;
+  top:7px;
+}
+
 .danger {
-  border-radius: 3px;
   border: rgb(248, 198, 203) solid 1px;
   background-color: rgb(250, 215, 218);
   color: rgb(125, 27, 37);
@@ -26,9 +32,21 @@
 .danger .message-close {
   color: rgb(195, 87, 97); 
 }
+
 .danger .message-close:hover {
   color: rgb(125, 27, 37); 
-  font-size: 1.1em;
-  right: 10px;
-  top:7px;
+}
+
+.success {
+  border: solid 1px rgb(192, 230, 205);
+  background-color: rgb(210, 237, 219);
+  color: rgb(5, 87, 77);
+}
+
+.success .message-close {
+  color: rgb(75, 147, 137);
+}
+
+.success .message-close:hover {
+  color: rgb(5, 87, 77);
 }

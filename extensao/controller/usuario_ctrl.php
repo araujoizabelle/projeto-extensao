@@ -1,8 +1,6 @@
 <?php
 	include("../model/banco.php");
 
-	$email = $_POST["email"];
-    $senha = $_POST["senha"];
     $acao = $_GET["act"];
 	
 	
@@ -22,7 +20,35 @@
     	return $result;
     }
 
+    function cadastrar($nome, $email, $senha) {
+    	$conexao = abrir();
+
+    	//Testar se email já está cadastrado
+    	$sql = "SELECT * FROM tb_usuario WHERE email = '".$email."'";
+
+    	$query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
+        
+        $result = mysqli_fetch_array($query);
+
+        if ($result) {
+        	fechar($conexao);
+        	return false;
+        } else {
+        	$sqlAdd = "INSERT INTO tb_usuario (nome, email, senha) values ";
+        	$sqlAdd .= "('".$nome."','".$email."','".$senha."')";
+			$queryAdd = mysqli_query($conexao, $sqlAdd) or die ("Deu erro na query: ".$sqlAdd.' '.mysqli_error($conexao));
+        
+        	//$result = mysqli_fetch_array($query);        	
+        	$usuarioId = mysqli_insert_id($conexao);
+        	fechar($conexao);
+        	return $usuarioId;
+        }
+    }
+
     if($acao == "login") {
+    	$email = $_POST["email"];
+    	$senha = $_POST["senha"];
+
     	$isAuth = autenticar($email, $senha);
  
     	if($isAuth) {
@@ -37,7 +63,17 @@
     	}
  
     } elseif ($acao == "add") {
+    	$nome = $_POST["nome"];
+    	$email = $_POST["email"];
+    	$senha = $_POST["senha"];
 
+    
+    	$usuarioId = cadastrar($nome,$email,$senha);
+    	if($usuarioId) {
+    		header("location:../index.html?msg=usuarioCadastrado");	
+    	} else {
+    		header("location:../index.html?msg=emailJaCadastrado");	
+    	}
     }
     
     

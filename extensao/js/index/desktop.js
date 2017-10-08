@@ -13,7 +13,12 @@ $(function(){
   var vars = getUrlVars();
 
   if (vars["msg"]=="loginIncorreto") {
-    $(".message").message({message:"Usuário ou senha incorretos!", class:"danger"});
+    $(".message")
+      .message({message:"Usuário ou senha incorretos!", class:"danger"});
+  } else if (vars["msg"]=="emailJaCadastrado") {
+    $(".message").message({message:"E-mail já cadastrado!", class:"danger"});
+  } else if (vars["msg"]=="usuarioCadastrado") {
+    $(".message").message({message:"Usuário cadastrado com sucesso", class:"success"});
   }
   
   //efeito formulário
