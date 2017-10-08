@@ -1,22 +1,25 @@
 <?php
 
-    var $local = 'localhost';
-    var $user =  'root';
-    var $senha = 'root';
-    var $msg0 = 'Conexão falou, erro: '.mysqli_error();
-    var $msg1 = 'Não foi possível selecionar o banco de dados!';
-    var $nome_db  = 'bd_evento';
-    
+    define("LOCAL", "localhost");
+    define("SERVERNAME", "localhost");
+    define("USERNAME", "root"); 
+    define("PASSWORD", "root");
+    define("DATABASE", "bd_evento"); 
+    define("MSG0", 'Conexão falou, erro: '.mysqli_error()); 
+    define("MSG1", 'Não foi possível selecionar o banco de dados!'); 
     
     function abrir(){
-        $link = mysqli_connect($local,$user,$senha) or die($msg0);
-        mysqli_select_db($link,$nome_db) or die($msg1);
+        $link = mysqli_connect(SERVERNAME,USERNAME,PASSWORD) or die(MSG0);
+        mysqli_select_db($link,DATABASE) or die(MSG1);
+        return $link;
     }
     
-    function fechar(){
+    function fechar($link){
         //analisar se o mysql_close precisa ser colocado numa variável
+        
         $closed = mysqli_close($link);
         $closed = NULL;
+        
     }
 /*
     public function insert($objeto){ 
