@@ -1,6 +1,6 @@
 ;(function($){
 	$(document).on("click", ".message-close", function(){
-		$(this).parent().hide(1000);
+		$(this).parent().hide(200);
 	});
 
 	$.fn.message = function(options) {
@@ -11,6 +11,6 @@
 			.append($("<div />")
 				.addClass("message-close")
 				.html("&times;"));
-		$(".message").show(2000);
+		$(".message").show(200);
 	}
 })(jQuery);
