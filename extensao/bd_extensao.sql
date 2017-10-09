@@ -29,14 +29,13 @@ CREATE TABLE IF NOT EXISTS `bd_evento`.`tb_tipoEvento` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-
 -- -----------------------------------------------------
 -- Table `bd_evento`.`tb_evento`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bd_evento`.`tb_evento` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL,
-  `data_inscricao` DATETIME NOT NULL,
+  `data_inscricao` DATETIME,
   `tipo_evento_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_evento_tipo_evento_idx` (`tipo_evento_id` ASC),
@@ -46,7 +45,6 @@ CREATE TABLE IF NOT EXISTS `bd_evento`.`tb_evento` (
     ON DELETE NO ACTION
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
-
 
 -- -----------------------------------------------------
 -- Table `bd_evento`.`tb_horarioEvento`
@@ -66,7 +64,8 @@ CREATE TABLE IF NOT EXISTS `bd_evento`.`tb_horarioEvento` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
-
+ALTER TABLE bd_evento.tb_horarioEvento
+	CHANGE COLUMN sala sala VARCHAR(45);
 -- -----------------------------------------------------
 -- Table `bd_evento`.`tb_usuario`
 -- -----------------------------------------------------
@@ -100,7 +99,131 @@ CREATE TABLE IF NOT EXISTS `bd_evento`.`tb_inscricao` (
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- alter table bd_evento.tb_evento
+-- -----------------------------------------------------
+alter table bd_evento.tb_evento
+ change column nome nome varchar(180) not null;
+ 
+alter table bd_evento.tb_evento
+ change column data_inscricao data_inscricao DATETIME;
+
+-- -----------------------------------------------------
+-- inset into bd_evento.tb_tipoEvento
+-- -----------------------------------------------------
+INSERT INTO bd_evento.tb_tipoEvento (`nome`)
+	VALUES ('Palestras'),
+    ('Minicursos'),
+    ('Mesa Redondas'),
+    ('Outra atividades'),
+    ('EXPOSUP'),
+    ('EXPOTEC');
+
+-- -----------------------------------------------------
+-- Insert into bd_evento.tb_evento
+-- -----------------------------------------------------
+INSERT INTO bd_evento.tb_evento (nome, tipo_evento_id)
+	VALUES ('Empreendendo com Química e Arte', 1),
+    ('Considerações sobre a carreira de Engenheira Eletrônica',1),
+    ('Introdução à GNU/Linux',2),
+    ('Modelagem de Processos de Negócio Utilizando o Bizagi',2),
+    ('Oratória: Comunicação e Técnicas de Apresentação de Trabalhos Acadêmicos',2),
+    ('Oficina de reciclagem de papel',4),
+    ('Qualidade de Energia Elétrica em Sistemas de Distribuição',1),
+    ('CURSO BÁSICO DE ARDUÍNO',2),
+    ('Modelagem de Processos de Negócio Utilizando o Bizagi',2),
+    ('Cinema e sociedade em diálogo: a matemática em nossas vidas',4),
+    ('Intercâmbio Estudantil pelo CEFET/RJ campus Nova Friburgo: relatos e experiências',1),
+    ('O Programa de Extensão CELi (Centro de Educação e Linguagens) do CEFET/RJ Nova Friburgo:
+    avaliações de alunos concluintes sobre o curso de língua inglesa',1),
+    ('Pilotando com a Bússola Acadêmica: desenho de um protótipo funcional premilinar',1),
+    ('Oficina de leitura e escrita literária',4),
+    ('Pensando a pontuação na produção de textos',2),
+    ('A tecnologia da Célula Combustível a hidrogênio e a aprendizagem no nível técnico',1),
+    ('Clean Technology Soluções Sustentáveis',1),
+    ('Ramo Estudantil IEEE UFRJ',1),
+    ('Gestão de Projetos com o MS-PROJECT',2),
+    ('Mostra Audiovisual 2017 - Tecnologia e Relações de Sociabilidade Contemporâneas [Sessão 1]',3),
+    ('O que é Matemática?',1),
+    ('Shell Script: descobrindo o poder da linha de comando',2),
+    ('Padrões de Análise: reuso de modelos no desenvolvimento de software orientado a objetos',1),
+    ('Operações topológicas: uma maneira de explorar curvas e superfícies no ensino básico',5),
+    ('Robótica Educacional',5),
+    ('Acessibilidade Autônoma no CEFET-RJ Campus Nova Friburgo',5),
+    ('Ponto de carregamento solar no CEFET-RJ Campus Nova Friburgo',5),
+    ('Portal dos Estagiários: Sistema de gestão do estágio interno no CEFET-RJ/NF',6),
+    ('Macrophage: um jogo sério para o ensino de imunologia',6),
+    ('DESENVOLVIMENTO DE ANIMAÇÃO PARA O ENSINO SOBRE TEORIAS EVOLUTIVAS',6),
+    ('TEORIAS EVOLUTIVAS: O FILME',6),
+    ('DESENVOLVIMENTO DE FILME CURTA-METRAGEM SOBRE DST`S E MÉTODOS CONTRACEPTIVOS',6),
+    ('Áreas Classificadas e Atmosferas Explosivas',1),
+    ('Montagem e configuração aplicado na pesquisa de veículos autônomos',2),
+    ('Transformar para-brisa obsoleto em material cerâmico',1),
+    ('Ferramentas de Qualidade: Aplicação prática para melhorias de gestão',2),
+    ('Mostra Audiovisual 2017 - Tecnologia e Relações de Sociabilidade Contemporâneas [Sessão 2]',3),
+    ('HUET',1),
+    ('Tipos de Plataformas para Exploração de Petróleo',1),
+    ('A importância de uma instituição financeira cooperativa para o desenvolvimento local e regional',1),
+    ('Montagem e configuração de um quadricóptero aplicado na pesquisa de veículos autônomos',2),
+    ('Ferramentas de Qualidade: Aplicação prática para melhorias de gestão',4),
+    ('INVESTINDO OS RECURSOS POUPADOS PARA REALIZAÇÃO DOS PROJETOS DE VIDA',1);
+     
+ -- -----------------------------------------------------
+-- Insert into bd_evento.tb_horarioEvento
+-- -----------------------------------------------------
+INSERT INTO bd_evento.tb_horarioEvento (id,data_inicio,data_termino,evento_id)
+	values (1,'2017-10-16 09:00:00','2017-10-16 10:00' , 130),
+    (2,'2017-10-16 10:30','2017-10-16 11:30', 131),
+    (3,'2017-10-16 13:00','2017-10-16 17:00', 132),
+    (4,'2017-10-16 13:00','2017-10-16 17:00', 133),
+    (5,'2017-10-16 13:00','2017-10-16 17:00', 134),
+    (6,'2017-10-16 14:00','2017-10-16 16:00', 135),
+    (7,'2017-10-16 16:00','2017-10-16 17:00', 136),
+    (8,'2017-10-16 18:00','2017-10-16 22:00', 137),
+    (9,'2017-10-16 18:00','2017-10-16 22:00', 138),
+    (10,'2017-10-16 18:00','2017-10-16 21:00', 139),
+    (11,'2017-10-16 19:00','2017-10-16 20:00', 140),
+    (12,'2017-10-16 20:00','2017-10-16 21:00', 141),
+    (13,'2017-10-16 21:00','2017-10-16 21:30', 142),
+    (14,'2017-10-17 08:00','2017-10-17 12:00', 143),
+    (15,'2017-10-17 09:00','2017-10-17 11:00', 144),
+    (16,'2017-10-17 09:00','2017-10-17 10:00', 145),
+    (17,'2017-10-17 10:30','2017-10-17 11:30', 146),
+    (18,'2017-10-17 13:00','2017-10-17 14:00', 147),
+    (19,'2017-10-17 13:00','2017-10-17 17:00', 137),
+    (20,'2017-10-17 13:00','2017-10-17 17:00', 148),
+    (21,'2017-10-17 13:00','2017-10-17 17:00', 134),
+    (22,'2017-10-17 14:00','2017-10-17 16:00', 149),
+    (23,'2017-10-17 16:00','2017-10-17 17:00', 150),
+    (24,'2017-10-17 18:00','2017-10-17 22:00', 148),
+    (25,'2017-10-17 18:00','2017-10-17 22:00', 151),
+    (26,'2017-10-17 19:00','2017-10-17 20:00', 152),
+    (27,'2017-10-18 08:00','2017-10-18 12:00', 153),
+    (28,'2017-10-18 08:00','2017-10-18 12:00', 154),
+    (29,'2017-10-18 08:00','2017-10-18 12:00', 155),
+    (30,'2017-10-18 08:00','2017-10-18 12:00', 156),
+    (31,'2017-10-18 08:00','2017-10-18 12:00', 157),
+    (32,'2017-10-18 08:00','2017-10-18 12:00', 158),
+    (33,'2017-10-18 08:00','2017-10-18 12:00', 159),
+    (34,'2017-10-18 08:00','2017-10-18 12:00', 160),
+    (35,'2017-10-18 08:00','2017-10-18 12:00', 161),
+    (36,'2017-10-18 13:00','2017-10-18 14:00', 162),
+    (37,'2017-10-18 13:00','2017-10-18 17:00', 163),
+    (38,'2017-10-18 14:00','2017-10-18 15:00', 164),
+    (39,'2017-10-18 14:00','2017-10-18 17:00', 165),
+    (40,'2017-10-18 14:00','2017-10-18 16:00', 166),
+    (41,'2017-10-18 15:00','2017-10-18 16:00', 167),
+    (42,'2017-10-18 16:00','2017-10-18 17:00', 168),
+    (43,'2017-10-18 18:00','2017-10-18 20:00', 169),
+    (44,'2017-10-18 18:00','2017-10-18 22:00', 170),
+    (45,'2017-10-18 18:00','2017-10-18 21:00', 171),
+    (46,'2017-10-18 19:00','2017-10-18 21:00', 172);
+    
+    
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+
