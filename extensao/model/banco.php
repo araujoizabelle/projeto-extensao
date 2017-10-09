@@ -5,7 +5,7 @@
     define("USERNAME", "root"); 
     define("PASSWORD", "root");
     define("DATABASE", "bd_evento"); 
-    define("MSG0", 'Conexão falou, erro: '.mysqli_error()); 
+    define("MSG0", 'Conexão falou, erro: '); 
     define("MSG1", 'Não foi possível selecionar o banco de dados!'); 
     
     function abrir(){
