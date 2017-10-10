@@ -57,7 +57,7 @@
     		$_SESSION['login'] = $isAuth["email"];
     		$_SESSION['nome'] = $isAuth["nome"];
 
-    		header("location:../home.html");
+    		header("location:../calendario.php");
     	} else {
     		header("location:../index.html?msg=loginIncorreto");
     	}
