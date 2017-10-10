@@ -4,10 +4,11 @@
 	function listar() {    	
     	$conexao = abrir();
         
-    	$sql =  "SELECT * FROM tb_evento e left join tb_horarioEvento h ";
-        $sql .= " on e.id = h.evento_id ";
-        $sql .= " left join tb_tipoEvento t "; 
-        $sql .= " on e.tipo_evento_id = t.id";
+    	$sql =  " SELECT e.id, e.nome, h.data_inicio, h.data_termino, t.id, t.nome ";
+        $sql .= " FROM tb_evento e, tb_horarioEvento h, tb_tipoEvento t ";
+        $sql .= " WHERE e.id = h.evento_id AND e.tipo_evento_id = t.id ";
+        $sql .= " group by h.data_inicio ";
+        $sql .= " order by h.data_inicio ASC ";
         
 
         //$sql = "SELECT * from tb_evento";
@@ -35,7 +36,7 @@
         }
         $resultStr .= "]";
         */
-        
+
         return json_encode($resultArray);
     }
 ?>

@@ -4,19 +4,15 @@
     $acao = $_GET["act"];
 	
 	
-	function autenticar($email, $senha) {
-    	
+	function autenticar($email, $senha) {   	
     	$conexao = abrir();
     	
     	$sql = "SELECT * FROM tb_usuario WHERE email = '".$email."' AND senha = '".$senha."'" ;
-
     	$query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
         
-
         $result = mysqli_fetch_array($query);
 
     	fechar($conexao);
-   	
     	return $result;
     }
 
@@ -56,9 +52,11 @@
     		$_SESSION['usuarioId'] = $isAuth["id"];
     		$_SESSION['login'] = $isAuth["email"];
     		$_SESSION['nome'] = $isAuth["nome"];
-
     		header("location:../calendario.php");
     	} else {
+            unset($_SESSION['login']);
+            unset($_SESSION['senha']);
+            unset($_SESSION['usuarioId']);
     		header("location:../index.html?msg=loginIncorreto");
     	}
  
