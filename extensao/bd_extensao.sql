@@ -279,3 +279,12 @@ ALTER TABLE `tb_horarioEvento`
 ALTER TABLE `tb_inscricao`
   ADD CONSTRAINT `fk_participante_has_evento_evento1` FOREIGN KEY (`evento_id`) REFERENCES `tb_evento` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_participante_has_evento_participante1` FOREIGN KEY (`usuario_id`) REFERENCES `tb_usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Update value  in table `tb_horarioEvento`
+--
+UPDATE `bd_evento`.`tb_horarioEvento`
+	SET `data_inicio` = '2017/10/18 14:00',
+    `data_termino` = '2017/10/18 17:00'
+    WHERE id = 45;
+    
