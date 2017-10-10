@@ -53,7 +53,7 @@ function montarTabela() {
 		
 		$date = new DateTime($row["data_termino"]);
 		echo "<td>".$date->format('H:i')."</td>"; //$row["data_termino"]
-		echo "<td><a href='evento.php?act=inscricao&id=".$row[0]."'>Inscreva-se!</a></td>";
+		echo "<td><a href='controller/evento_ctrl.php?act=inscricao&id=".$row[0]."'>Inscreva-se!</a></td>";
 		echo "<td><a href='evento.php?act=get&id=".$row[0]."'>Detalhes</a></td>";
 		echo "</tr>";
 		

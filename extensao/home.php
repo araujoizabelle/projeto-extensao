@@ -2,6 +2,27 @@
 <html>
 <head>
 	<title>3</title>
+	<meta charset="utf-8" />
+    <title>Evento</title>
+    <link rel="stylesheet" href="./css/reset.css" />
+    <script src="./js/jquery.min.js"></script>
+    <script>
+
+	    $(function(){
+	    	var servico = "./controller/home_ctrl.php";
+	    	var param = {"act": "list"};
+	    	var xhr = $.get(servico, param);
+
+	    	xhr.done(function(data){
+	    		var eventosTipoArray = JSON.parse(data);
+	    		$.each(eventosTipoArray, function(index, obj){
+	    			$(".programacao")
+	    				.append($("<div />").addClass(obj.tipo_evento)
+	    					.append($("<h1 />").text(obj.tipo_evento)));
+	    		})
+	    	})
+	    });
+	</script>
 </head>
 <body>
 	<header>
@@ -26,6 +47,8 @@
 		</table>
 		<button>Salvar</button>
 	</main>
+	<div class="programacao">
+	</div>
 </body>
 </html>
 

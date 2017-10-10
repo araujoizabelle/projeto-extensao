@@ -12,17 +12,22 @@
     $acao = $_GET['act'];
 
 
+//@TODO programar a exceção para evitar tentativas de inscricao em horarios concomitantes
+// evitar inscrições em um mesmo evento
     function inscrever($evento_id, $usuario_id){
-        $sql  = "INSERT INTO tb_inscricao (participante_id, evento_id) VALUES ";
+        $sql  = "INSERT INTO tb_inscricao (usuario_id, evento_id) VALUES ";
         $sql .= "(".$usuario_id.",".$evento_id.")";
+
         $conexao = abrir();
-        $query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
+        $query = mysqli_query($conexao, $sql);// or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
+        
+        $num_rows = mysqli_affected_rows($conexao);
         fechar($conexao);
-        if ($result) {
-            fechar($conexao);
-            return true;
-        } else {
+
+        if ($num_rows<1) {
             return false;
+        } else {
+            return true;
         }
     }
 
@@ -92,18 +97,66 @@
         return json_encode($resultArray);
     }
 
+    function isHorarioDisponivel($evento_id, $usuario_id){
+        $conexao = abrir();
+
+        $sqlDataNovo  = " select h.data_inicio, h.data_termino ";
+        $sqlDataNovo .= " from tb_evento e, tb_horarioEvento h ";
+        $sqlDataNovo .= " where e.id = h.evento_id and e.id = ".$evento_id;
+
+        $sqlDataInscrito  = " select h.data_inicio, h.data_termino ";
+        $sqlDataInscrito .= " from tb_inscricao i, tb_horarioEvento h";
+        $sqlDataInscrito .= " where i.evento_id = h.evento_id and ";
+        $sqlDataInscrito .= " i.usuario_id = ".$usuario_id;
+
+
+        $horarioNovoList = mysqli_query($conexao, $sqlDataNovo) or die ("Deu erro na query: ".$sqlDataNovo.' '.mysqli_error($conexao));
+
+        $horarioInscritoList = mysqli_query($conexao, $sqlDataInscrito) or die ("Deu erro na query: ".$sqlDataInscrito.' '.mysqli_error($conexao));
+        
+        while ($rowNovo = mysqli_fetch_array($horarioNovoList, MYSQLI_ASSOC)) {
+            $dataNovoInicio = strtotime($rowNovo["data_inicio"]);
+            $dataNovoTermino = strtotime($rowNovo["data_termino"]);
+
+            while ($rowInscrito = mysqli_fetch_array($horarioInscritoList, MYSQLI_ASSOC)) {
+               
+                $dataInscritoInicio = strtotime($rowInscrito["data_inicio"]);
+                $dataInscritoTermino = strtotime($rowInscrito["data_termino"]);
+
+                if($dataNovoInicio<=$dataInscritoTermino
+                    && $dataNovoInicio>=$dataInscritoInicio) {
+                    fechar($conexao);
+                    return false;
+                }
+                if($dataNovoTermino<=$dataInscritoTermino 
+                    && $dataNovoTermino>=$dataInscritoInicio) {
+                    fechar($conexao);
+                    return false;
+                }
+            }
+        }
+        fechar($conexao);
+        return true;
+    }
 
     
     if($acao == "inscricao") {
         $evento_id = $_GET["id"];
         $usuario_id = $_SESSION["usuarioId"];
-        $result = inscrever($evento_id, $usuario_id);
-        
-        if($result) {
-            header("location:../home.html?msg=inscricaoEfetuada"); 
+
+        if(isHorarioDisponivel($evento_id, $usuario_id)) {
+            $result = inscrever($evento_id, $usuario_id);
+            if($result == true) {
+                header("location:../home.php?msg=inscricaoEfetuada"); 
+            } else {
+                header("location:../home.php?msg=erro"); 
+            }
         } else {
-            header("location:../home.html?msg=erro"); 
+            header("location:../programacao.php?msg=conflitoHorario"); 
         }
+    //echo $result;
+
+        
 
     } elseif ($acao == "get") {
 
