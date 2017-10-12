@@ -3,7 +3,7 @@
 */
 
 header('Content-type: text/html; charset=utf-8'); 
-
+/*
 session_start();
 
 if(isset($_SESSION['usuarioId'])== null){
@@ -11,16 +11,80 @@ if(isset($_SESSION['usuarioId'])== null){
   unset($_SESSION['senha']);
   header('location:index.html');
 }
-
+*/
 ?>
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Login</title>
-    <link rel="stylesheet" href="./css/reset.css" />
 
-    <script src="./js/jquery.min.js"></script>
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <link rel="stylesheet" type="text/css" href="./js/plugins/calendar-plugin.css" />
+  <script src="./js/jquery.min.js"></script>
+  
+  <script src="./js/plugins/calendar-plugin.js"></script>
+
+  <script>
+    $(function(){
+      var evento = {id:1
+          , nome: "Evento XPTO"
+          , horario_inicio: "10:15"
+          , horario_fim: "11:30"
+          , tipo: "palestra"};
+
+      var evento2 = {id:2
+          , nome: "Palestra ABC"
+          , horario_inicio: "8:10"
+          , horario_fim: "9:10"
+          , tipo: "palestra"};
+
+      var evento3 = {id:3
+          , nome: "Minicurso de jQuery"
+          , horario_inicio: "8:00"
+          , horario_fim: "12:00"
+          , tipo: "minicurso"};
+
+      var evento4 = {id:4
+          , nome: "Evento XYZ"
+          , horario_inicio: "13:10"
+          , horario_fim: "15:10"
+          , tipo: "palestra"};
+
+      var eventos = [evento, evento2];
+      var eventos2 = [evento3, evento4];
+
+      var sala20 = {nome: "Sala 20", data: "2017-10-09", programacao: eventos};
+      var sala12 = {nome: "Sala 12", data: "2017-10-09", programacao: eventos};
+      var sala10 = {nome: "Sala 10", data: "2017-10-09", programacao: eventos};
+      var sala9 = {nome: "Sala 9", data: "2017-10-09", programacao: eventos};
+      var sala1B = {nome: "Sala 1B", data: "2017-10-09", programacao: eventos2};
+
+      var opcoes = {qtdLinhas: 6
+          , horaInicial: 8
+          , salas: [sala9, sala10, sala12, sala20, sala1B]};
+
+        var url = "./controller/calendario_ctrl.php";
+        var params = {"act": "list"};
+        var $xhr = $.get(url, params);
+
+        $xhr.done(function(data) {
+          var dataEventosArray = JSON.parse(data);
+          console.log(dataEventosArray);
+        });
+
+        $(".calendar").calendar(opcoes);
+    });
+
+  </script>
+</head>
+<body>
+
+  <div class="calendar"></div>
+  <div class="message"></div>
+  <button>Fazer aparecer o plugin!</button>
+</body>
+</html>
+<!--
+
    	<script>
    		$(function() {
    			var url = "./controller/calendario_ctrl.php";
@@ -83,3 +147,5 @@ if(isset($_SESSION['usuarioId'])== null){
     </table>
   </body>
 </html>
+
+-->
