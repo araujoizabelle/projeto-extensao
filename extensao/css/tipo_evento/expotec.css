@@ -1,0 +1,39 @@
+body{
+	background-color:#ffff54;
+}
+*{
+    color: #000;
+}
+.evento h2{
+	background-color: #ffff00;
+}
+
+.evento{
+	font-family: Arial, sans-serif;
+	background-color: #e0e000;
+}
+.description{
+	font-size: 16pt;
+	background-color: #ffff00;
+	font-family: Arial, sans-serif;
+	text-align: justify;
+}
+.palestrante, .bioPalestrante{
+	background-color: #e0e000;
+	text-align: justify;
+}
+.buttonInscrever{
+	margin-top: 10px;
+	text-align: center;
+	padding-top: 10px;
+	background-color: #e0e000;
+	border-radius: 5px;
+	box-shadow: 5px 5px 50px  #000;
+}
+.buttonInscrever:hover{
+	background-color: #ffff54;
+	font-weight: bold;
+}
+.bioPalestrante{
+	font-family: Arial, sans-serif;
+}

@@ -21,12 +21,3 @@
 	</main>
 </body>
 </html>
-
-é basicamente isso então??? Acho que sim, são as telas que ele pediu
-
-entao blz
-qualquer coisa amanha de manha a gente edita!
-
-Sim, senhor! As always, was a pleasure work with u my man!! 
-
-KKKKKKKKKKKK
