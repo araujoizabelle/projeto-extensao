@@ -9,6 +9,7 @@
     }
 
 	$evento_id = $_GET["id"];
+
 ?>
 <!doctype html>
 <html>
@@ -27,19 +28,20 @@
 				var servico = "controller/evento_ctrl.php";
 
   				if (vars["act"]=="get") {
-  					var params = {act:"get", id: vars["id"]};
-		    		
+  					var params = {act:"get", evento_id: vars["evento_id"]};
+		    		var servico = "./controller/calendario_ctrl.php";
+
 		    		var $xhr = $.get(servico, params);
 		    		$xhr.done(function(data){
 		    			console.log(data);
 		    			var evento = JSON.parse(data);
 		    			console.log(evento);
 		    			$(".evento")
-		    				.append($("<h1 />").text(evento.nome))
-		    				.append($("<p />").text("Tipo do evento: " + evento.tipo))
-		    				.append($("<p />").text("Autor: " + evento.autor))
-		    				.append($("<p />").text("Bio do autor: " + evento.autor_bio))
-		    				.append($("<p />").text("Descrição: " + evento.descricao))
+		    				.append($("<h1 />").text(evento.evento_nome))
+		    				.append($("<p />").text("Tipo do evento: " + evento.evento_tipo))
+		    				.append($("<p />").text("Autor: " + evento.evento_autores.toString()))
+		    				//.append($("<p />").text("Bio do autor: " + evento.autor_bio))
+		    				.append($("<p />").text("Descrição: " + evento.evento_descricao))
 		    				.append($("<ul />") //@TODO substituir por um foreach
 		    					.append($("<li />").text(evento.horarios[0].data_inicio))
 		    					.append($("<li />").text(evento.horarios[0].data_termino))

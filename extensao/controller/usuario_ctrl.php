@@ -67,6 +67,7 @@
 
     
     	$usuarioId = cadastrar($nome,$email,$senha);
+
     	if($usuarioId) {
     		header("location:../index.html?msg=usuarioCadastrado");	
     	} else {

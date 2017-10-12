@@ -1,3 +1,18 @@
+<?php
+/* esse bloco de código em php verifica se existe a sessão, pois o usuário pode simplesmente não fazer o login e digitar na barra de endereço do seu navegador o caminho para a página principal do site (sistema), burlando assim a obrigação de fazer um login, com isso se ele não estiver feito o login não será criado a session, então ao verificar que a session não existe a página redireciona o mesmo para a index.php.
+*/
+
+header('Content-type: text/html; charset=utf-8'); 
+
+session_start();
+
+if(isset($_SESSION['usuarioId'])== null){
+  unset($_SESSION['login']);
+  unset($_SESSION['senha']);
+  header('location:index.html');
+}
+
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -5,90 +20,48 @@
     <title>Login</title>
     <link rel="stylesheet" href="./css/reset.css" />
 
-<?php
-/* esse bloco de código em php verifica se existe a sessão, pois o usuário pode simplesmente não fazer o login e digitar na barra de endereço do seu navegador o caminho para a página principal do site (sistema), burlando assim a obrigação de fazer um login, com isso se ele não estiver feito o login não será criado a session, então ao verificar que a session não existe a página redireciona o mesmo para a index.php.
-*/
-
-include("./controller/calendario_ctrl.php");
-
-header('Content-type: text/html; charset=utf-8'); 
-
-session_start();
-
-if(!isset ($_SESSION['usuarioId'])== null){
-	unset($_SESSION['login']);
-	unset($_SESSION['senha']);
-	header('location:index.html');
-}
-
-
-//$logado = $_SESSION['login'];
-
-//print_f($eventos);
-//$eventosArray = null;
-
-
-//$numLinhas = mysql_num_rows($eventosArray);
-//printf($eventosArray);
-
-function montarTabela() { 
-	$eventosArray = listar();
-	$data_atual = null;
-	while ($row = mysqli_fetch_array($eventosArray)) { //MYSQL_NUM
-		$date = new DateTime($row["data_inicio"]);
-		if($data_atual == null || $data_atual != $date->format('d/m/Y')) {
-			$data_atual = $date->format('d/m/Y');
-			echo "<tr><th colspan='6'>Programação do dia ".$data_atual."</th></tr>";
-			echo "<tr><th>Título</th><th>Tipo</th><th>início</th><th>fim</th>";
-			echo "<th colspan='2'></th></tr>";
-		}
-		echo "<tr>";
-		//echo "<td>Id do evento: ".$row[0]."</td>";
-		echo "<td>".$row[1]."</td>";
-		echo "<td>".$row["nome"]."</td>";
-
-		$date = new DateTime($row["data_inicio"]);
-//$date->format('Y-m-d H:i:s')
-		echo "<td>".$date->format('H:i')."</td>";
-		
-		$date = new DateTime($row["data_termino"]);
-		echo "<td>".$date->format('H:i')."</td>"; //$row["data_termino"]
-		echo "<td><a href='controller/evento_ctrl.php?act=inscricao&id=".$row[0]."'>Inscreva-se!</a></td>";
-		echo "<td><a href='evento.php?act=get&id=".$row[0]."'>Detalhes</a></td>";
-		echo "</tr>";
-		
-	}
-}
-
-?>
-    
-    
     <script src="./js/jquery.min.js"></script>
    	<script>
-   		/*
    		$(function() {
-   			var url = "./controller/calendario_ctrl.php/listarJson";
-   			var $xhr = $.get(url);
+   			var url = "./controller/calendario_ctrl.php";
+        var params = {"act": "list"};
+   			var $xhr = $.get(url, params);
 
    			$xhr.done(function(data) {
-   				var eventosArray = JSON.parse(data);
-   				//eventosArray = data;
-   				console.log(eventosArray);
-   				$.each(eventosArray, function(index, evento){
-   					$(".eventos")
-   						.append($("<tr />")
-   							.append($("<td />")
-   								.text(evento.nome)
-   							)
-   							.append($("<td />")
-   								.text(evento.tipo_evento_id))
-   							.append($("<td />")
-   								.text(evento.data_inicio))
-   							.append($("<td />")
-   								.text(evento.data_fim))
-   						)	
-   				})
+   				var dataEventosArray = JSON.parse(data);
+          
+   				var dia = null;
+          $.each(dataEventosArray, function(index, dataEvento){
+            
+   					var $horario = $("<tr/>");
+            var $evento = $("<td />");
+            $.each(dataEvento.eventos, function(index, evento){
+              $evento
+                .append($("<div/>")
+                  .append($("<a/>")
+                    .attr("href","evento.php?act=get&evento_id="+evento.evento_id)
+                    .text(evento.evento_nome))
+                  .append($("<span/>").text(evento.evento_tipo))
+                  .append($("<div />").addClass("detalhes").text("+"))
+                  );
+            });
+
+            $horario
+              .append($("<th/>").text(dataEvento.hora_inicio + " - " + dataEvento.hora_termino))
+              .append($evento);
+            if(dia == null || dia != dataEvento.data) {
+              dia = dataEvento.data;
+              $(".eventos")
+                .append($("<tr />")
+                  .append($("<th />").attr("colspan", "4")
+                    .text(dataEvento.data)
+                  )
+                );
+            }
+            $(".eventos").append($horario);	
+   				});
    				
+          
    			});
 
    			$xhr.fail(function(data){
@@ -96,22 +69,17 @@ function montarTabela() {
    			})
    			
    		})
-   		*/
+   		
    	</script>
     
   </head>
   <body class="fadeIn">
     <table class="eventos">
     	<tr>
-    		<th>Título</th>
-    		<th>Tipo</th>
-    		<th>início</th>
-    		<th>fim</th>
+    		<th>Horário</th>
+    		<th>Evento</th>
     		<th colspan="2"></th>
     	</tr>
-    <?php
-    	montarTabela();
-    ?>
     </table>
   </body>
 </html>

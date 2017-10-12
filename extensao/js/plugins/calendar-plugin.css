@@ -1,0 +1,106 @@
+.calendar{
+	position: relative;
+}
+.calendar-date{
+	border-style: solid;
+	border-width: 1px;
+	text-align: center;
+	padding: 5px;
+	box-sizing: border-box;
+}
+.calendar-date:first-child{
+	position: relative;
+	left: 100px;
+}
+.calendar-body{
+	clear: right;
+	position: relative;
+} 
+.calendar-time-title, .calendar-room-title{
+	padding: 5px;
+	height: 30px;
+	box-sizing: border-box;
+	text-align: center;
+}
+.calendar-room {
+	width: 200px;
+	position: relative;
+	float: left;
+}
+
+.calendar-time, .calendar-grid {
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	height: 60px;
+	padding: 5px;
+	box-sizing: border-box;
+}
+
+.calendar-grid-time {
+	width: 100px;
+	float: left;
+}
+.calendar-time {
+	text-align: center;
+}
+
+.calendar-grid {
+	border-right-style: solid;
+	border-right-width: 1px;
+}
+
+.calendar-place {
+	float: left;
+	width: 400px;
+}
+
+.calendar-event {
+	position: absolute;
+	top: 30px;
+	left: 20px;
+	padding: 10px 5px;
+	box-sizing: border-box;
+	border-radius: 3px;
+	vertical-align: middle;
+	width: 160px;
+	border-style: solid;
+	border-width: 1px;
+}
+
+
+/* cores */
+
+.calendar-date{
+	border-color: rgb(68, 189, 263);
+	background-color: rgb(68, 189, 263);
+	color: #fff;
+}
+
+.calendar-room-title {
+	background-color: rgb(48, 169, 243);
+}
+.calendar-time, .calendar-grid {
+	border-bottom-color: #aaf;
+}
+.calendar-time:nth-child(2n){
+	background-color: #ccc;
+}
+.calendar-grid:nth-child(2n) {
+	background-color: #ddd;
+}
+.calendar-grid {
+	border-right-color:rgb(48, 169, 243);
+}
+
+.palestra {
+	border-color: #333;
+	background-color: rgba(68, 189, 263, 0.5);
+	color:#fff;
+}
+
+.minicurso {
+	border-color: #333;
+	background-color: rgba(168, 89, 63, 0.5);
+	color:#fff;	
+}
+
