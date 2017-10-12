@@ -1,0 +1,64 @@
+*{
+	margin: 0;
+}
+.cabecalho{
+	text-align: center;
+	position: relative;
+	border-bottom: 1px solid #000;
+}
+.cabecalho button{
+	position: absolute;
+	right: 3vw;
+	bottom: 1vw;
+}
+main{
+	width: 1000px;
+	position: relative;
+	left: 40vh;
+}
+.evento{
+	display: flex;
+	text-align: center;
+}
+.evento h3{
+	flex-grow: 0.3;
+    word-break: normal;
+    padding: 0.5vh 0.5vw 0 0.5vw;
+}
+.evento h2{
+	flex-grow: 0.4;
+}
+.description{
+	padding: 10px;
+}
+.description p{
+	margin-top:0.5vh;
+	font-size: 1.3em;
+}
+.buttonInscrever{
+	width: 100%;
+	height: 5vh;
+	margin: 0;
+	padding-bottom: 5px;
+}
+.buttonInscrever p{
+	margin: 0;
+}
+.palestrante img{
+	border-radius: 50px;
+	width: 5vw;
+	margin: 0 7.5vw;
+}
+.palestrante{
+	width: 20vw;
+	float: left;
+	margin: 1vh 0 0 7px;
+	padding: 10px;
+	border-radius: 10px;
+}
+.palestrante:last-child{
+	margin-right: 0;
+}
+.bioPalestrante h3{
+	text-align: center;
+}

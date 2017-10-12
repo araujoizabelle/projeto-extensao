@@ -51,6 +51,3 @@
 	</div>
 </body>
 </html>
-
-essa linha que vc está fazendo nao precisa. Ela será gerada automaticamnete
-Eu sei, mas é só pra ter um guia, ele pediu pra mim hj kkk eu tinha dito "mas Escalf, nós vamos fazer só com php não precisa fazer agr". Aí ele pediu pra fazer uma estrutura assim com exemplo de como ia ficar
