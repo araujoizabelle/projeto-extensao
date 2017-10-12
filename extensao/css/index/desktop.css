@@ -3,27 +3,42 @@
 .fadeIn{
   display: flex;
   width: 100vw;
+  font-family: arial;
   height: 100vh;
-  background-image: url('../../img/background.jpg');
-  background-size: 150% 150%;
+  background-image: url('../../img/campus.jpg');
+  background-repeat: no-repeat;
+  background-size: 111% 111%;
   background-position: center;
 }
 .form{
+  position: relative;
   width: 500px;
   margin: auto;
   z-index: 9999;
   background-color: #fff;
   padding: 40px;
+  padding-bottom: 60px;
 }
 .clear{
   clear: both;
 }
-.title{
+.logo{
+  display: block;
+  margin: 0 auto;
+  width: 250px;
+  padding-bottom: 50px;
+}
+.subtitle{
+  position: absolute;
+  bottom: 0;
+  font-size: 12px;
+  text-transform: capitalize;
+  letter-spacing: 1px;
+  font-weight: normal;
   text-align: center;
-  margin: 20px 10px 40px 10px;
-  letter-spacing: 2px;
-  word-spacing: 5px;
-  text-transform: uppercase;
+  width: inherit;
+  padding: 20px 0;
+  color: #555;
 }
 .email{
   position: relative;
@@ -31,6 +46,7 @@
   height: 100px;
 }
 .labelEmail{
+  user-select: none;
   position: absolute;
   text-align: center;
   text-transform: uppercase;
@@ -58,6 +74,7 @@
   height: 100px;
 }
 .labelSenha{
+  user-select: none;
   position: absolute;
   text-align: center;
   text-transform: uppercase;
@@ -84,7 +101,7 @@
 }
 .send{
   float: left;
-  width: 13px;
+  width: 120px;
   height: 40px;
   border: 0;
   margin-left: 30px;
@@ -102,7 +119,7 @@
 }
 .registrar{
   float: right;
-  width: 120px;
+  width: 130px;
   line-height: 40px;
   margin-right: 30px;
   text-decoration: none;
@@ -117,27 +134,6 @@
 .registrar:hover, .registrar:focus{
   background-color: rgb(62, 171, 39);
   color: #fff;
-  width: 150px;
+  width: 160px;
   outline: none;
 }
-.confirmaemail{
-  position: relative;
-  width: 500px;
-  height: 100px;
-  
-  
-}
-.confirmasenha{
-  position: relative;
-  width: 500px;
-  height: 100px;
-}
-
-
-/*
-
-Azul: rgb(23, 131, 209)
-vermelho: rgb(167, 36, 36)
-verde: rgb(62, 171, 39)
-
-*/

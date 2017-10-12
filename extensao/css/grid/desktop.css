@@ -1,0 +1,137 @@
+@charset "utf-8";
+
+.fadeIn{
+  overflow-x: hidden;
+  font-family: arial;
+}
+.header{
+  display: flex;
+  background: url('../../img/campus.jpg') fixed center;
+  background-size: cover;
+  height: 110vh;
+  border-bottom: 2px solid #000;
+}
+.header-content{
+  text-transform: uppercase;
+  letter-spacing: 10px;
+  margin: auto;
+  font-size: 50px;
+}
+.partition{
+  display: flex;
+  height: 300px;
+  text-align: center;
+  background-color: rgb(31, 147, 210);
+}
+.partition-h1{
+  border-top: 3px solid rgb(21, 102, 146);
+  border-bottom: 3px solid rgb(21, 102, 146);
+  line-height: 80px;
+  margin: auto;
+  font-size: 40px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  word-spacing: 10px;
+  color: #fff;
+}
+.nav{
+  margin: auto;
+}
+.nav li{
+  display: inline-block;
+  border-right: 2px solid rgb(21, 102, 146);
+  border-left: 2px solid rgb(21, 102, 146);
+  width: 150px;
+  padding: 10px;
+  margin: 40px;
+  transition: .2s;
+}
+.nav  a{
+  text-decoration: none;
+  padding: 20px;
+  color: rgb(12, 56, 80);
+  transition: .2s;
+}
+.nav  li:hover{
+  background-color: rgb(21, 102, 146);
+  border-right: 2px solid rgba(0,0,0,0);
+  border-left: 2px solid rgba(0,0,0,0);
+}
+.nav  li:hover a{
+  color: #fff;
+}
+.content{
+  display: block;
+}
+.day{
+  width: 100vw;
+  margin: 0 auto;
+}
+.day-date{
+  width: inherit;
+  text-align: center;
+  line-height: 100px;
+  border-top: 2px solid #000;
+  border-bottom: 2px solid #000;
+  background-color: rgb(40, 45, 78);
+}
+.day-date h1{
+  font-size: 40px;
+  letter-spacing: 5px;
+  word-spacing: 10px;
+  color: #fff;
+  text-transform: uppercase;
+}
+.day-grid{
+  width: inherit;
+}
+.grid{
+  width: inherit;
+  height: auto;
+  display: flex;
+}
+.grid-hour{
+  float: left;
+  width: 100px;
+  padding: auto 0;
+  display: flex;
+}
+.grid-hour h1{
+  margin: auto;
+}
+.grid-event{
+  width: inherit;
+}
+.event{
+  position: relative;
+  display: flex;
+  min-height: 80px;
+}
+.event-tipo{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 10px 15px;
+}
+.evento-title{
+  margin: auto;
+}
+.event-local{
+  position: absolute;
+  bottom: 0;
+  right: 75px;
+  padding: 10px 15px;
+}
+.event-details{
+  display: flex;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 75px;
+  min-height: inherit;
+}
+.fa{
+  margin: auto;
+  font-size: 20px !important;
+  text-align: center;
+}

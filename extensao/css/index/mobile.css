@@ -1,0 +1,8 @@
+@charset "utf-8";
+
+.fadeIn{
+  background-image: url('../../img/campus.jpg');
+  background-repeat: no-repeat;
+  background-size: 100% 50%;
+  background-color: red;
+}
