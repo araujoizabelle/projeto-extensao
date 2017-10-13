@@ -55,6 +55,28 @@
         return $eventoHtml;
     }
     
+	function gerarGrade() {
+    	$conexao = abrir();
+
+    	$sql = "SELECT e.nome, h.*, s.nome as sala FROM tb_evento e inner join tb_horarioEvento h ";
+    	$sql .= "on e.id = h.evento_id inner join tb_sala s on s.id = h.sala_id ";
+		$sql .= "group by e.nome ";
+		$sql .= "order by h.data_inicio ASC ";
+		$query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
+        
+    	$elementoHtml = "";
+   		while ($row = mysqli_fetch_array($query, MYSQLI_ASSOC)){
+   			echo "<br />";
+
+   			$elementoHtml .= '<h1>'.$row["nome"]."</h1>";
+   			$elementoHtml .= '<h3> De '.$row["data_inicio"].' até '. $row["data_termino"].'</h3>';
+   			$elementoHtml .= '<h3> Local '.$row["sala"]."</h3>";
+   			$elementoHtml .= '<hr />';
+   		}
+   		fechar($conexao);
+   		return $elementoHtml;
+   	}
+
     if($_GET["act"] =="update") {
     	$evento_id = $_GET["evento_id"];
     	$horario_id = $_POST["horario"];
@@ -68,7 +90,7 @@
     	$query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
         
         fechar($conexao);
-    }
+    } 
 ?>
 <!doctype html>
 <html>
@@ -85,9 +107,17 @@
 		}
 	</style>
 </head>
-<body>
+<body>	
+	<a href="administracao.php?act=get">Ver resultado</a>
 	
-		<?php echo(geraEventoHTML()); ?> 
+		<?php 
+			if($_GET["act"]!="get") {
+				echo(geraEventoHTML()); 
+			} else {
+				echo gerarGrade();
+			}
+
+		?> 
 		
 	</form>
 </body>

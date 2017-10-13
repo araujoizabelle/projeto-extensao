@@ -1,6 +1,6 @@
 <?php
 	include("../model/banco.php");
-
+/*
     session_start();
 
     if($_SESSION['usuarioId'] == null){
@@ -8,7 +8,7 @@
         unset($_SESSION['senha']);
         header('location:../index.html');
     }
-    
+*/    
     $acao = $_GET['act'];
 
 
@@ -59,41 +59,53 @@
         return $result;
     }
 
+    function listarEventos() {
+        $conexao = abrir();
+        $sql = "SELECT * FROM tb_evento ";
+
+        $query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
+        $eventosArray = array();
+        while($row = mysqli_fetch_array($query, MYSQLI_ASSOC)) {
+            array_push($eventosArray, array("id" => $row["id"]
+                            , "nome" => utf8_encode($row["nome"])
+                            , "tipo_evento_id" => $row["tipo_evento_id"]
+                            , "descricao" => utf8_encode($row["descricao"])));
+        }
+        fechar($conexao);
+        $result = json_encode($eventosArray);
+        return $result;
+    }
+
     function listHorarioEvento($evento_id) {
         $conexao = abrir();
-        
         $sql =  " SELECT * FROM tb_horarioEvento h WHERE h.id = ".$evento_id;
-        
         $horarioList = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
-        $json_str = '"horarios": [';
+        
+        $result = array();
         while ($row = mysqli_fetch_array($horarioList, MYSQLI_ASSOC)) { //MYSQL_NUM
-            $json_str .= '{"data_inicio": "'.$row["data_inicio"];
-            $json_str .= '", "data_termino": "'.$row["data_termino"].'" }';     
+            array_push($result, array("data_inicio" => $row["data_inicio"]
+                                    , "data_termino" => $row["data_termino"]));     
         }
-        $json_str .= "]";
-
         fechar($conexao);
-    
-        return $json_str;
+        return $result;
     }    
 
     function getEventoJson($evento_id){
         $evento = get($evento_id);
         $foto = ($evento["foto"])?$evento["foto"]:"#";
         $tipoEvento = getTipoEvento($evento["tipo_evento_id"]);
-        $json_str  = '{"id":"'.$evento["id"].'", "nome": "'.$evento["nome"].'", "autor": "'.$evento["autor"];
-        $json_str .= '", "descricao":"'.$evento["descricao"].'", "autor_bio":"';
-        $json_str .= $evento["autor_bio"].'", "foto":"'.$foto;
-        $json_str .= '", "tipo":"'.$tipoEvento["nome"].'", ';
-        $json_str .= listHorarioEvento($evento["id"]);
-        $json_str .= "}";
-        return $json_str;
+        $result = array("id" => $evento["id"]
+                    , "nome" => utf8_encode($evento["nome"])
+                    , "descricao" => utf8_encode($evento["descricao"])
+                    , "tipo_evento_id" => $evento["tipo_evento_id"]
+                    , "tipo" => utf8_encode($tipoEvento["nome"])
+                    , "horarios" => listHorarioEvento($evento["id"]));
+        return json_encode($result);
     }
 
     function listarJson() {
         $resultArray = listar();
         $total = count($resultArray);
-        
         return json_encode($resultArray);
     }
 
@@ -154,22 +166,12 @@
         } else {
             header("location:../programacao.php?msg=conflitoHorario"); 
         }
-    //echo $result;
-
-        
-
     } elseif ($acao == "get") {
-
         $evento_id = $_GET["id"];
         echo getEventoJson($evento_id);
-
-/*
-        
-        if($_POST["evento"]) {
-            header("location:../evento.html"); 
-        } else {
-            header("location:../index.html?msg=emailJaCadastrado"); 
-        }
-        */
+    } elseif ($acao == "list") {
+        $result =listarEventos();
+        echo $result;
     }
+
 ?>
