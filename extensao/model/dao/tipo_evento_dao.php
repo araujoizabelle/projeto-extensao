@@ -1,4 +1,5 @@
 <?php 
+/*
 	include("../tipo_evento.php");
 
 class TipoEventoDao{
@@ -44,4 +45,5 @@ class TipoEventoDao{
 	
 
 }
+*/ 
 ?>

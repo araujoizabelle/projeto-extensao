@@ -1,6 +1,23 @@
 <?php
 	include("../model/banco.php");
 
+//	include("evento_ctrl.php");
+//	include("tipo_evento_ctrl.php");
+
+
+function getTipo($id) {
+    	$conexao = abrir();
+    	$sql = "SELECT * FROM tb_tipoEvento t";
+    	$sql .= " WHERE t.id = ".$id;
+    	$query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
+        
+        $result = mysqli_fetch_array($query);
+
+    	fechar($conexao);
+    	return $result["nome"];	
+    }
+
+
 	function listarHorarioEvento($evento_id) {
 		$conexao = abrir();
 		$sql = "SELECT * FROM tb_horarioEvento h where h.evento_id = ".$evento_id;
@@ -13,20 +30,19 @@
         }
         return $horario_array;
 	}
+
 	function listaEventosPorTipo($tipo_evento_id){
 		$conexao = abrir();
 		$eventos_array = array();
-		$sql = "SELECT * FROM tb_evento e where e.tipo_evento_id = ".$tipo_evento_id;
+		$sql = "SELECT e.* FROM tb_evento e where e.tipo_evento_id = ".$tipo_evento_id;
 
         $query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
         
         while ($row = mysqli_fetch_array($query, MYSQLI_ASSOC)) { 
 			array_push($eventos_array, 
-						array("evento_id" => $row["id"],
-								"evento_nome" => $row["nome"],
-								"evento_autor" => $row["autor"],
-								"evento_sala" => $row["sala"],
-								"evento_descricao" => $row["descricao"]
+						array("evento_id" => $row["id"]
+								, "evento_nome" => $row["nome"]
+								, "evento_descricao" => $row["descricao"]
 								));
 		}
 
@@ -52,12 +68,24 @@
 		echo json_encode($result_array);
 		fechar($conexao);
 	}
-
-
+	
 
 	$acao = $_GET["act"];
 	
 	if($acao == "list") {
-		listaEventos();
+		if($_GET["tipos"]!=null){
+			$tiposArray = json_decode($_GET["tipos"]);
+			$result = array();
+			for($i=0; $i<count($tiposArray);$i++) {
+				array_push($result, array("tipo" => getTipo($tiposArray[$i])
+								, "eventos" => listaEventosPorTipo($tiposArray[$i])));
+			}
+			echo json_encode($result);
+		} else {
+			listaEventos();
+		}
+
+	} elseif($acao == "listId"){
+		echo listTiposId();
 	}
 ?>

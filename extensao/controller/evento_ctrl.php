@@ -78,18 +78,37 @@
 
     function listHorarioEvento($evento_id) {
         $conexao = abrir();
-        $sql =  " SELECT * FROM tb_horarioEvento h WHERE h.id = ".$evento_id;
+        $sql =  " SELECT h.*, s.nome as sala FROM tb_horarioEvento h inner join tb_sala s ";
+        $sql .= " on s.id = h.sala_id WHERE h.id = ".$evento_id;
         $horarioList = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
         
         $result = array();
         while ($row = mysqli_fetch_array($horarioList, MYSQLI_ASSOC)) { //MYSQL_NUM
             array_push($result, array("data_inicio" => $row["data_inicio"]
-                                    , "data_termino" => $row["data_termino"]));     
+                                    , "data_termino" => $row["data_termino"]
+                                    , "sala" => $row["sala"]));     
         }
         fechar($conexao);
         return $result;
     }    
-
+    function listAutores($evento_id) {
+        $conexao = abrir();
+        $sql  =  " SELECT a.* FROM tb_autor a inner join "; 
+        $sql .= " autor_tem_evento ae on a.id = ae.tb_autor_id ";
+        $sql .= " WHERE ae.tb_evento_id = ".$evento_id;
+        $horarioList = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
+        
+        $result = array();
+        while ($row = mysqli_fetch_array($horarioList, MYSQLI_ASSOC)) { //MYSQL_NUM
+            array_push($result, array("id" => $row["id"]
+                                    , "nome" => $row["nome"]
+                                    , "foto" => $row["foto"]
+                                    , "lattes" => $row["lattes"]
+                                    , "bio" => $row["bio"]));     
+        }
+        fechar($conexao);
+        return $result;
+    }    
     function getEventoJson($evento_id){
         $evento = get($evento_id);
         $foto = ($evento["foto"])?$evento["foto"]:"#";
@@ -99,7 +118,8 @@
                     , "descricao" => utf8_encode($evento["descricao"])
                     , "tipo_evento_id" => $evento["tipo_evento_id"]
                     , "tipo" => utf8_encode($tipoEvento["nome"])
-                    , "horarios" => listHorarioEvento($evento["id"]));
+                    , "horarios" => listHorarioEvento($evento["id"])
+                    , "autores" => listAutores($evento["id"]));
         return json_encode($result);
     }
 
@@ -151,7 +171,39 @@
         return true;
     }
 
-    
+    function listaPorTipoEData($tipo_id, $data) {
+        $conexao = abrir();
+        $sql  = " SELECT e.*, t.nome as tipo, s.nome as sala, ";
+        $sql .= " h.data_inicio, h.data_termino ";
+        $sql .= " FROM tb_evento e inner join tb_tipoEvento t ";
+        $sql .= " on e.tipo_evento_id = t.id inner join tb_horarioEvento h ";   
+        $sql .= " on h.evento_id = e.id inner join tb_sala s ";
+        $sql .= " on s.id = h.sala_id ";
+        $sql .= " where e.tipo_evento_id = ".$tipo_id . " AND ";
+        $sql .= " DATE(h.data_inicio) = '".$data. "'";
+        $sql .= " order by h.data_inicio ASC ";
+
+        $query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
+        $eventosArray = array();
+        while($row = mysqli_fetch_array($query, MYSQLI_ASSOC)) {
+            
+            $data_inicio = new DateTime($row["data_inicio"]);
+            $data_termino = new DateTime($row["data_termino"]);
+            
+            array_push($eventosArray, array("id" => $row["id"]
+                                , "nome" => utf8_encode($row["nome"])
+                                , "descricao" => utf8_encode($row["descricao"])
+                                , "tipo" => utf8_encode($row["tipo"])
+                                , "sala" => utf8_encode($row["sala"])
+                                , "hora_inicio" => $data_inicio->format('H:i')
+                                , "hora_termino" => $data_termino->format('H:i')
+                            ));
+
+        }
+        fechar($conexao);
+        return json_encode($eventosArray);
+    }
+
     if($acao == "inscricao") {
         $evento_id = $_GET["id"];
         $usuario_id = $_SESSION["usuarioId"];
@@ -170,8 +222,11 @@
         $evento_id = $_GET["id"];
         echo getEventoJson($evento_id);
     } elseif ($acao == "list") {
-        $result =listarEventos();
-        echo $result;
+        if($_GET["tipo"]!=null && $_GET["data"]!=null) {
+            echo listaPorTipoEData($_GET["tipo"], $_GET["data"]);
+        } else {
+            echo listarEventos();
+        }
     }
 
 ?>
