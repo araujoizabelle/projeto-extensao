@@ -17,6 +17,19 @@ function getTipo($id) {
     	return $result["nome"];	
     }
 
+    function listTipo() {
+    	$conexao = abrir();
+    	$sql = "SELECT * FROM tb_tipoEvento t";
+    	$query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
+        $result = array();
+        while($row = mysqli_fetch_array($query, MYSQLI_ASSOC)) {
+        	array_push($result, array("id" => $row["id"]
+        						, "nome" => utf8_encode($row["nome"])));
+        }
+    	fechar($conexao);
+    	return $result;	
+    }
+
 
 	function listarHorarioEvento($evento_id) {
 		$conexao = abrir();
@@ -73,19 +86,19 @@ function getTipo($id) {
 	$acao = $_GET["act"];
 	
 	if($acao == "list") {
-		if($_GET["tipos"]!=null){
-			$tiposArray = json_decode($_GET["tipos"]);
-			$result = array();
-			for($i=0; $i<count($tiposArray);$i++) {
-				array_push($result, array("tipo" => getTipo($tiposArray[$i])
-								, "eventos" => listaEventosPorTipo($tiposArray[$i])));
-			}
-			echo json_encode($result);
-		} else {
-			listaEventos();
-		}
+		listaEventos();
 
 	} elseif($acao == "listId"){
 		echo listTiposId();
+	} elseif($acao == "listaPorTipo") {
+		$tiposArray = listTipo();
+		$result = array();
+		for($i=0; $i<count($tiposArray);$i++) {
+			$tipoNome = $tiposArray[$i]["nome"];
+			$tipoId = $tiposArray[$i]["id"];
+			array_push($result, array("tipo" => $tipoNome
+							, "eventos" => listaEventosPorTipo($tipoId)));
+		}
+		echo json_encode($result);
 	}
 ?>
