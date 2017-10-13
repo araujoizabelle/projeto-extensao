@@ -1,5 +1,5 @@
 body{
-	background-color: #3CB371;
+	background-color: #42a14f;
 }
 *{
     color: #fff;
@@ -22,16 +22,16 @@ body{
 	text-align: justify;
 }
 .palestrante, .bioPalestrante{
-	background-color: #98FB98;
+	background-color: #2a9939;
 	text-align: justify;
 }
 .buttonInscrever{
 	margin-top: 10px;
 	text-align: center;
 	padding-top: 10px;
-	background-color: #98FB98;
+	background-color: #2a9939;
 	border-radius: 5px;
-	box-shadow: 5px 5px 50px #008000;
+	box-shadow: 5px 5px 50px #2a9939;
 	color: #696969;
 }
 .buttonInscrever:hover{
