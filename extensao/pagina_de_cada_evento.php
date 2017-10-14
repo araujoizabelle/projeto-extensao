@@ -4,8 +4,8 @@
 <head>
 	<title>Eventos</title>
 	<meta charset="utf-8">
-	<link rel="stylesheet" type="text/css" href="./tipo_evento/css/evento.css">
-	<link rel="stylesheet" type="text/css" href="./tipo_evento/css/#.css"> <!--Aqui será colocada a folha de estilo do evento específico-->
+	<link rel="stylesheet" type="text/css" href="./css/tipo_evento/evento.css">
+	<link rel="stylesheet" type="text/css" href="./css/tipo_evento/#.css"> <!--Aqui será colocada a folha de estilo do evento específico-->
 	<link rel="stylesheet" href="./css/font-awesome-4.7.0/css/font-awesome.min.css">
    <link href="https://fonts.googleapis.com/css?family=Monda:700" rel="stylesheet">
 	<script src="./js/jquery.min.js"></script>
@@ -20,7 +20,7 @@
 	<main class="main">
         <section class="evento">
             <div class="tipo_evento">
-                <h3>tipo do evento</h3>
+                <h3><!---tipo do evento--></h3>
             </div>
 		  <div class="info_evento">
 			<h2>NOME</h2>
