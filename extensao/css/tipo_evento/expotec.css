@@ -1,39 +1,38 @@
-body{
-	background-color:#ffff54;
-}
 *{
-    color: #000;
-}
-.evento h2{
-	background-color: #ffff00;
+    font-family: 'Monda', sans-serif;
+    color: #d39308;
+   
 }
 
+body{
+    background-color: #ededed;
+}
+.tipo_evento h3{
+	font-size: 5em;
+    text-transform: uppercase;
+}
+.info_evento h2, .description{  
+     background-color: #e4e4e4;
+}
+.info_evento h3, .buttonInscrever{
+    background-color: #f9f9f9;
+    font-size:14pt;
+}
 .evento{
-	font-family: Arial, sans-serif;
-	background-color: #e0e000;
+    text-transform: uppercase;
 }
 .description{
-	font-size: 16pt;
-	background-color: #ffff00;
-	font-family: Arial, sans-serif;
-	text-align: justify;
+    font-size: 1.2em;
 }
-.palestrante, .bioPalestrante{
-	background-color: #e0e000;
-	text-align: justify;
-}
-.buttonInscrever{
-	margin-top: 10px;
-	text-align: center;
-	padding-top: 10px;
-	background-color: #e0e000;
-	border-radius: 5px;
-	box-shadow: 5px 5px 50px  #000;
+.palestrante{
+    background-color: #e4e4e4; 
+    font-size: 0.8em;
 }
 .buttonInscrever:hover{
-	background-color: #ffff54;
-	font-weight: bold;
+    font-size:16pt;
+    background-color: #ededed;
 }
-.bioPalestrante{
-	font-family: Arial, sans-serif;
+
+.palestrante:hover{
+    background-color: #f9f9f9;
 }
