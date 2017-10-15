@@ -12,8 +12,7 @@
 </head>
 <body>
 	<header class="cabecalho">
-		<h1>CEFET/RJ Nova Friburgo</h1>
-		<h1>Semana de Extensão 2017</h1>
+		<img src="./img/logo_extensao.png" alt="Logo"/>
 		<p>Fulano de Tal</p>
 		<button class="logout">Sair</button>
 	</header>

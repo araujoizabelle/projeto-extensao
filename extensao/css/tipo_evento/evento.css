@@ -2,31 +2,39 @@
 	margin: 0;
 }
 body{
-    width: 100vw;
+    width: 98vw;
 }
 .cabecalho{
 	text-align: center;
 	position: relative;
-	border-bottom: 1px solid #000;
+}
+.cabecalho img{
+    width: 500px;
+    margin: 0;
+    text-align: center;
+    position: relative;
+    left: 5vw;
 }
 .cabecalho button{
 	position: absolute;
-	right: 3vw;
+    right:1vw;   
 	top:1vh;
 }
 .cabecalho p{
-    font-size: 2em;
+    font-size: 1.5em;
     text-align: left;
-    margin-left: 3vw;
+    position: absolute;
+    top: 0vh;
+    right: 5vw;    
 }
 .tipo_evento h3{
     transform: rotate(-90deg);
     position: absolute;
-    top: 50vh;
+    top: 40vh;
     left: -10vw;
 }
 .info_evento{
-    width:95.5vw;
+    width:95vw;
     display: flex;
     justify-content: flex-end;
     text-align: center;

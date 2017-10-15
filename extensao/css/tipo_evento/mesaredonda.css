@@ -9,9 +9,8 @@ body{
 }
 .tipo_evento h3{
 	font-size: 4em;
-	max-width: 500px;
 	position: absolute;
-    top: 30vh;
+    top: 40vh;
 	text-transform: uppercase;
 }
 .info_evento h2, .description{  
