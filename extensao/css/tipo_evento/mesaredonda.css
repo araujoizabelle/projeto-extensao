@@ -1,42 +1,40 @@
-body{
-	background-color: #da8b2c;
-}
 *{
-    color: #fff;
-}
-.evento h2{
-	background-color: #d86506;
+    font-family: 'Monda', sans-serif;
+    color:#da8b2c;
+   
 }
 
+body{
+    background-color: #ededed;
+}
+.tipo_evento h3{
+	font-size: 4em;
+	position: absolute;
+    top: 40vh;
+	text-transform: uppercase;
+}
+.info_evento h2, .description{  
+     background-color: #e4e4e4;
+}
+.info_evento h3, .buttonInscrever{
+    background-color: #f9f9f9;
+    font-size:14pt;
+}
 .evento{
-	color: #FFF;
-	font-family: Arial, sans-serif;
-	background-color: #aa5912;
+    text-transform: uppercase;
 }
 .description{
-	font-size: 16pt;
-	background-color: #d86506;
-	font-family: Arial, sans-serif;
-	text-align: justify;
+    font-size: 1.2em;
 }
-.palestrante, .bioPalestrante{
-	background-color: #bb6f28;	
-	text-align: justify;
-}
-.buttonInscrever{
-	margin-top: 10px;
-	text-align: center;
-	padding-top: 10px;
-	background-color: #da8b2c;
-	border-radius: 5px;
-	box-shadow: 5px 5px 50px #a76213;
-	color: #fff;
+.palestrante{
+    background-color: #e4e4e4; 
+    font-size: 0.8em;
 }
 .buttonInscrever:hover{
-	background-color: #a76213;
-	font-weight: bold;
-	color: #fff;
+    font-size:16pt;
+    background-color: #ededed;
 }
-.bioPalestrante{
-	font-family: Arial, sans-serif;
+
+.palestrante:hover{
+    background-color: #f9f9f9;
 }
