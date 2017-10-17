@@ -1,16 +1,16 @@
 <?php
-/*
-  session_start();
 
+  session_start();
+/*
     if($_SESSION['usuarioId']== null){
         unset($_SESSION['login']);
         unset($_SESSION['senha']);
         unset($_SESSION['nome']);
         header('location:index.html');
     }
-
-  $evento_id = $_GET["id"];
 */
+  $evento_id = $_GET["id"];
+
 ?>
 
 <!DOCTYPE html>

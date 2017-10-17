@@ -52,7 +52,7 @@
     		$_SESSION['usuarioId'] = $isAuth["id"];
     		$_SESSION['login'] = $isAuth["email"];
     		$_SESSION['nome'] = $isAuth["nome"];
-    		header("location:../home.php");
+    		header("location:../grid.php");
     	} else {
             unset($_SESSION['login']);
             unset($_SESSION['senha']);
