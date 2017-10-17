@@ -38,12 +38,12 @@ body{
     display: flex;
     justify-content: flex-end;
     text-align: center;
- 
+
 }
 .info_evento h2{
     flex-grow: 0.5;
-    word-wrap: normal;  
-    max-width: 850px;
+    word-wrap: break-word;  
+    max-width: 60vw;
 }
 .info_evento h3{
     flex-grow:  0.1;

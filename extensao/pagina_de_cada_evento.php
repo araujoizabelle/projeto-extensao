@@ -5,24 +5,25 @@
 	<title>Eventos</title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="./css/tipo_evento/evento.css">
-	<link rel="stylesheet" type="text/css" href="./css/tipo_evento/#.css"> <!--Aqui será colocada a folha de estilo do evento específico-->
+	<link rel="stylesheet" type="text/css" href="./css/tipo_evento/palestra.css"> <!--Aqui será colocada a folha de estilo do evento específico-->
 	<link rel="stylesheet" href="./css/font-awesome-4.7.0/css/font-awesome.min.css">
-   <link href="https://fonts.googleapis.com/css?family=Monda:700" rel="stylesheet">
+   <link href="https://fonts.googleapis.com/css?family=Monda:700" rel="stylesheet"><!-- Trocar para a Gotham medium ou bold pro header e Roboto mono pro corpo do texto  -->
 	<script src="./js/jquery.min.js"></script>
 </head>
 <body>
 	<header class="cabecalho">
 		<img src="./img/logo_extensao.png" alt="Logo"/>
 		<p>Fulano de Tal</p>
+        <!-- Botão pra voltar -->
 		<button class="logout">Sair</button>
 	</header>
 	<main class="main">
         <section class="evento">
             <div class="tipo_evento">
-                <h3><!---tipo do evento--></h3>
+                <h3>Palestra </h3>
             </div>
 		  <div class="info_evento">
-			<h2>NOME</h2>
+			<h2>Nome</h2>
 			<h3>SALA</h3>
             <div class="buttonInscrever"><p>Inscrever-se</p></div>
 		  </div>
