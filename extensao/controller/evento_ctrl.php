@@ -204,6 +204,36 @@
         return json_encode($eventosArray);
     }
 
+    function listaPorDataHorario($data_inicio, $data_fim) {
+        $conexao = abrir();
+        $inicioTime = strtotime($data_inicio);
+        $inicio = date('Y-m-d H:i',$inicioTime);
+        $fimTime = strtotime($data_fim);
+        $termino = date('Y-m-d H:i',$fimTime);
+
+        $sql  = " SELECT h.data_inicio as inicio, e.id, e.nome, t.nome as tipo, s.nome as local ";
+        $sql .= " FROM tb_horarioEvento h inner join tb_evento e ";
+        $sql .= " on h.evento_id = e.id inner join tb_tipoEvento t ";
+        $sql .= " on t.id = e.tipo_evento_id inner join tb_sala s ";
+        $sql .= " on s.id = h.sala_id ";
+        $sql .= " WHERE (h.data_inicio >= \"".$inicio."\" AND h.data_inicio < \"".$termino."\") ";
+        //$sql .= " OR (h.data_inicio < \"".$inicio."\" AND h.data_termino >= \"".$termino."\") ";
+        $sql .= " ORDER BY h.data_inicio ASC ";
+
+
+        $query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
+        $eventosArray = array();
+        while($row = mysqli_fetch_array($query, MYSQLI_ASSOC)) {
+            $inicio = new DateTime($row["inicio"]);
+            array_push($eventosArray, array("id" => $row["id"]
+                                        , "nome" => utf8_encode($row["nome"])
+                                        , "inicio" => $inicio->format('H:i')
+                                        , "tipo" => utf8_encode($row["tipo"])
+                                        , "local" => utf8_encode($row["local"])));
+        }
+        return json_encode($eventosArray);
+    }
+
     if($acao == "inscricao") {
         $evento_id = $_GET["id"];
         $usuario_id = $_SESSION["usuarioId"];
@@ -227,6 +257,8 @@
         } else {
             echo listarEventos();
         }
+    } elseif ($acao == "listByDateTime"){
+        echo listaPorDataHorario($_GET["begin"], $_GET["end"]);
     }
 
 ?>
