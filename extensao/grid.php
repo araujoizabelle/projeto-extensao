@@ -1,3 +1,18 @@
+<?php
+/*
+  session_start();
+
+    if($_SESSION['usuarioId']== null){
+        unset($_SESSION['login']);
+        unset($_SESSION['senha']);
+        unset($_SESSION['nome']);
+        header('location:index.html');
+    }
+
+  $evento_id = $_GET["id"];
+*/
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -121,6 +136,7 @@
         <h1 class="partition-h1">Programação Do Evento</h1>
         <li><a href="#">Segunda-feira</a></li>
         <li><a href="#">Terça-feira</a></li>
+        <li><a href="#">Quarta-feira</a></li>
       </ul>
     </div>
     <main class="content">

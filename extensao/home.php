@@ -10,34 +10,7 @@
     <script src="./js/jquery.min.js"></script>
     <script src="./js/plugins/carousel.js"></script>
     <script>
-    	var param = {"act": "list"};
-
-    	function listTiposId() {
-	    	$.get("./controller/tipo_evento_ctrl.php?act=listId")
-		    	.done(function(data){
-		    		var teste = JSON.parse(data);
-		    		param.tipos = data;
-		    		return data;
-		    	}).fail(function(data){
-		    		console.log("erro " + data);
-		    		return "";
-		    	});
-	    }
-
-    	function listDatas() {
-    		$.get("./controller/horario_ctrl.php?act=list")
-	    		.done(function(data){
-	    		param.datas = data;
-
-	    		return JSON.parse(data);
-	    	});
-    	}
-
-		var tipos = listTiposId();
-    	var datas = listDatas();
-    	
-    	param.tipos = tipos;
-    	param.datas = datas;
+    	var param = {"act": "listaPorTipo"};
 
 	    $(function(){
 	    	
