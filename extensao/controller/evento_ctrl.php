@@ -160,6 +160,7 @@ $usuario_id = 2;
         fechar($conexao);
         return $dataArray;
     }
+
     function listarMeusEventos($usuario_id) {
 $usuario_id = 2;
         $conexao = abrir();

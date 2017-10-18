@@ -63,7 +63,6 @@
 				var evento_id = vars["id"];
 				$.get("./controller/evento_ctrl.php?act=get&id="+evento_id).done(function(data){
 					var evento = JSON.parse(data);
-					
 					//configurando folha de estilo
 					setFolha(evento.tipo);
 					$(".tipo_evento h3").text(evento.tipo);
@@ -132,7 +131,7 @@
 		  <div class="info_evento">
 			<h2>NOME</h2>
 			<h3>SALA</h3>
-			<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
+			<button type="button" class="btn btn-primary btn-custom" data-toggle="modal" data-target="#myModal">Inscreva-se!</button>
 
             
 		  </div>

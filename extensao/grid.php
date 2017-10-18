@@ -70,30 +70,39 @@
           });
         });
       }
-
-      function carregaGridDia(data, intervalo) {
+      function carregaDiasEventos(data, intervalo) {
         var dataArray = data.split("-");
         var ano = dataArray[0];
         var mes = parseInt(dataArray[1])-1;
         var diaDoMes = dataArray[2];
         var diaDate = new Date(ano, mes, diaDoMes);
-        //passo 1 identificar até que horas haverá eventos iniciando
-        var servico = "./controller/horario_ctrl.php?act=";
-        var params = {"act": "getHourLastEvent", "date": data};
-        $.get(servico, params).done(function(data){
-          //retirando as aspas do data;
-          var horarioTermino = parseInt(data.substring(1, data.length-1));
-          $divDia = $("<div/>")
+        $divDia = $("<div/>")
                       .addClass("day").attr("data-dia", diaDoMes)
                       .append($("<div />").addClass("day-date")
                         .append($("<h1/>").attr("id", getDiaSemana(diaDate))
                           .text(getDiaSemana(diaDate) +  "["+diaDoMes+"]")
                         )
                       );
+        $("main").append($divDia);
+        carregaGridDia($divDia, data, intervalo);
+      }
+
+      function carregaGridDia($div, data, intervalo) {
+        var dataArray = data.split("-");
+        var ano = dataArray[0];
+        var mes = parseInt(dataArray[1])-1;
+        var diaDoMes = dataArray[2];
+        //passo 1 identificar até que horas haverá eventos iniciando
+        var servico = "./controller/horario_ctrl.php?act=";
+        var params = {"act": "getHourLastEvent", "date": data};
+        $.get(servico, params).done(function(data){
+          //retirando as aspas do data;
+          var horarioTermino = parseInt(data.substring(1, data.length-1));
+          
           for(var i=8; i<horarioTermino; i+=intervalo) {
             var dataStr = ano+"-"+(mes+1)+"-"+diaDoMes;
             var seletor= dataStr+"_"+i;
-            $divDia
+            $div
               .append($("<div/>").addClass("day-grid")
                 .append($("<div />").addClass("grid")
                   .append($("<div />").addClass("grid-hour")
@@ -103,21 +112,24 @@
                     .attr("data-inicio",seletor))
                 )
               );
-            $("main").append($divDia);
+            
             carregarEventos($("div[data-inicio="+seletor+"]")
                           , dataStr+" "+i+":00"
-                          , dataStr+" "+(i+intervalo)+":00");
-            
+                          , dataStr+" "+(i+intervalo)+":00");      
           }
-          
-        });
-        
+        }); 
       }
-      $(function(){
 
-        carregaGridDia("2017-10-16", 2);
-        carregaGridDia("2017-10-17", 2);
-        carregaGridDia("2017-10-18", 2);
+      $(function(){
+        $.get("./controller/horario_ctrl.php?act=list")
+          .done(function(data){
+            var dataArray = JSON.parse(data);
+            console.log(dataArray);
+            $.each(dataArray, function(i, obj){
+              carregaDiasEventos(obj, 2);
+            })
+          });
+              
         
         $("main").on("click", ".event", function(){
           var evento_id = $(this).attr("id");

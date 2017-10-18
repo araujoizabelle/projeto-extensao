@@ -19,10 +19,12 @@ if(isset($_SESSION['usuarioId'])== null){
 <head>
   <meta charset="utf-8"/>
   <link rel="stylesheet" type="text/css" href="./js/plugins/calendar-plugin.css" />
+  <link rel="stylesheet" href="./font/css/font-awesome.min.css" />
+  <link rel="stylesheet" type="text/css" href="./js/bootstrap.min.css"/>
   <script src="./js/jquery.min.js"></script>
-  
+  <script src="./js/bootstrap.min.js"></script>
   <script src="./js/plugins/calendar-plugin.js"></script>
-
+  
   <script>
     $(function(){
         var url = "./controller/evento_ctrl.php";
@@ -47,7 +49,27 @@ if(isset($_SESSION['usuarioId'])== null){
 
   <div class="calendar"></div>
   <div class="message"></div>
-  <button>Fazer aparecer o plugin!</button>
+
+  <div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Semana de Extensão 2017 - Confirmação de Desistência</h4>
+      </div>
+      <div class="modal-body">
+        <p>Deseja desistir de sua inscrição no evento?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="buttonInscrever" class="btn btn-danger" data-dismiss="modal">Confirmar</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 </body>
 </html>
 <!--

@@ -1,5 +1,6 @@
 ;(function($){
 
+
 	function criaLinha(hora) {
 		return "<div class='calendar-line'><div class='calendar-time'>"+hora+":00</div><div class='calendar-grid'></div>";
 	}
@@ -7,11 +8,16 @@
 	function criaEvento(evento, horaInicialGrade){
 		var $evento = $("<div/>")
 						.addClass("calendar-event")
-						.addClass(evento.tipo)
-						.attr("id", "evento_"+evento.id)
-						.attr("data-termino", evento.horario_fim)
-						.text(evento.nome);
+						.addClass(evento.tipo.toLowerCase().split(" ")[0])
+						.append($("<p/>")
+							.attr("id", "evento_"+evento.id)
+							.attr("data-termino", evento.horario_fim)
+							.text(evento.nome));
 		
+		$evento
+			.append($("<div />")
+				.addClass("remove").html("&times;")
+				.attr({"data-toggle":"modal","data-target": "#myModal"}));
 		//a altura padrão das grids está configurada para 60px;
 		var alturaPadrao = 60;
 
@@ -32,6 +38,12 @@
 		
 		var $eventosArray = $(".calendar-event");
 		$evento.css({top: topo, height: duracao});
+		//calculando número de caracteres proporcional ao tamanho da caixa
+		var numMaxCaracteres = (parseInt($evento.css("height"))/30)*20;
+		if($evento.children("p").text().length>numMaxCaracteres) {
+			$evento.children("p").text($evento.children("p").text().substr(0,numMaxCaracteres)+"...");	
+		}
+		
 		return $evento;
 	}
 
@@ -85,13 +97,21 @@
 		}
 	}
 
+	
 	$.fn.calendar = function(options){
+
 		var numLinhas = options.qtdLinhas;
 		var horaInicial = options.horaInicial;
 		$(this)			
 			.append($("<div />").addClass("calendar-body")
 				.append(carregarGridHoras(options.qtdLinhas, options.horaInicial))
 				.append(carregarSalas(options.salas, options.qtdLinhas, options.horaInicial)));
+
+
+		$(this).on("click", ".calendar-event p", function(){
+			var evento_id = $(this).attr("id").substr(7);
+			location.href = "evento.php?act=get&id="+evento_id;
+		});
 
 	}
 

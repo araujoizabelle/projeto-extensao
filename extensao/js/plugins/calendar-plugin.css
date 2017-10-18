@@ -1,3 +1,6 @@
+* {
+	font-family: 'Monda', sans-serif;
+}
 .calendar{
 	position: relative;
 }
@@ -93,14 +96,75 @@
 }
 
 .palestra {
-	border-color: #333;
-	background-color: rgba(68, 189, 263, 0.5);
+	border-color: rgb(125, 207, 79);
+	background-color: rgba(95, 177, 49, 1);
 	color:#fff;
 }
 
 .minicurso {
-	border-color: #333;
-	background-color: rgba(168, 89, 63, 0.5);
+	border-color: rgb(254, 95, 92);
+	background-color: rgba(224, 65, 62, 1);
 	color:#fff;	
 }
 
+.mesa {
+	border-color: rgb(248, 179, 74);
+	background-color: rgba(218, 139, 44, 1);
+	color:#fff;	
+}
+
+.outra {
+	border-color: rgb(86, 132, 154);
+	background-color: rgba(56, 102, 124, 1);
+	color:#fff;	
+}
+.exposup {
+	border-color: rgb(190, 155, 51);
+	background-color: rgba(160, 125, 21, 1);
+	color:#fff;		
+}
+
+.expotec {
+	border-color: rgb(241, 177, 38);
+	background-color: rgba(211, 147, 8, 1);
+	color:#fff;		
+}
+
+.palestra:hover {
+	background-color: rgba(95, 177, 49, 0.5);
+	transition: all 0.3s;
+}
+.minicurso:hover {
+	background-color: rgba(224, 65, 62, 0.5);
+	transition: all 0.3s;	
+}
+
+
+
+.outra:hover {
+	background-color: rgba(56, 102, 124, 0.5);
+	transition: all 0.3s;
+}
+.exposup:hover {
+	background-color: rgba(160, 125, 21, 0.5);
+	transition: all 0.3s;
+}
+
+.expotec:hover {
+	background-color: rgba(211, 147, 8, 0.5);
+	transition: all 0.3s;
+}
+
+.remove {
+	color: #fff;
+	position: absolute;
+	top: 0px;
+	right: 3px;
+	width: 10px;
+	height: 12px;
+	text-align: right;
+}
+.remove:hover {
+	color:#ddd;
+	transition: all 0.3s;
+}
