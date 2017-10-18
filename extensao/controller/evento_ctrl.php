@@ -1,5 +1,5 @@
 <?php
-	include("../model/banco.php");
+    include("../model/banco.php");
 
     session_start();
 /*
@@ -97,17 +97,17 @@
 
     }
 
-	function get($evento_id) {    	
-    	$conexao = abrir();
+    function get($evento_id) {      
+        $conexao = abrir();
         
-    	$sql =  " SELECT * FROM tb_evento e ";
+        $sql =  " SELECT * FROM tb_evento e ";
         $sql .= " WHERE e.id = ".$evento_id;
         
-    	$query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
+        $query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
         
         $result = mysqli_fetch_array($query, MYSQLI_ASSOC); //MYSQLI_BOTH  //MYSQLI_NUM //MYSQLI_ASSOC
-    	fechar($conexao);
-   	
+        fechar($conexao);
+    
         return $result;
     }
 
@@ -139,6 +139,65 @@
         }
         fechar($conexao);
         $result = json_encode($eventosArray);
+        return $result;
+    }
+
+    //listar todas as datas em que o usuario tem inscricoes
+    function listarDatasInscricoes($usuario_id) {
+$usuario_id = 2;
+        $conexao = abrir();
+        $sql  = "SELECT distinct DATE(h.data_inicio) as inicio ";
+        $sql .= " FROM tb_horarioEvento h inner join tb_inscricao i ";
+        $sql .= " ON i.evento_id = h.evento_id ";
+        $sql .= " WHERE i.usuario_id = ".$usuario_id . " "; 
+        $sql .= " ORDER BY inicio ASC ";
+
+        $query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
+        $dataArray = array();
+        while($row = mysqli_fetch_array($query, MYSQLI_ASSOC)) {
+            array_push($dataArray, $row["inicio"]);
+        }
+        fechar($conexao);
+        return $dataArray;
+    }
+    function listarMeusEventos($usuario_id) {
+$usuario_id = 2;
+        $conexao = abrir();
+        $dataArray = listarDatasInscricoes($usuario_id);
+        $objArray = array();
+        
+        for($i=0; $i<count($dataArray); $i++) {
+            $data = $dataArray[$i];
+            $sql  = " SELECT e.*, t.nome as tipo, ";
+            $sql .= " h.data_inicio as inicio, "; 
+            $sql .= " h.data_termino as termino  FROM tb_evento e "; 
+            $sql .= " inner join tb_inscricao i on e.id = i.evento_id ";
+            $sql .= " inner join tb_horarioEvento h on e.id = h.evento_id ";
+            $sql .= " inner join tb_tipoEvento t on e.tipo_evento_id = t.id ";
+            $sql .= " WHERE i.usuario_id = ".$usuario_id;
+            $sql .= " AND DATE(h.data_inicio) = '".$data. "' ";
+            $sql .= " ORDER BY h.data_inicio ASC ";
+
+
+            $query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
+            $eventosArray = array();
+            while($row = mysqli_fetch_array($query, MYSQLI_ASSOC)) {
+                $inicio  = new DateTime($row["inicio"]);
+                $termino = new DateTime($row["termino"]);
+
+                array_push($eventosArray, array("id" => $row["id"]
+                                , "nome" => utf8_encode($row["nome"])
+                                , "horario_inicio" => $inicio->format('H:i')
+                                , "horario_fim" => $termino->format('H:i')
+                                , "tipo" => $row["tipo"]
+                                ));
+            }
+            array_push($objArray, array("data" => $data
+                                   , "programacao" => $eventosArray));
+        }
+        $result = json_encode($objArray);
+        fechar($conexao);
+        
         return $result;
     }
 
@@ -287,8 +346,10 @@
         
         echo inscrever($_GET["evento_id"], $_GET["participante_id"]);
         
-    } elseif($acao=="teste") {
-        isLimiteEsgotado($_GET["evento_id"]);
+    } elseif($acao=="listMyEvents") {
+        echo listarMeusEventos($_SESSION["usuarioId"]);
+    } elseif ($acao=="teste") {
+         echo listarDatasInscricoes($usuario_id);
     }
 
 

@@ -53,11 +53,14 @@
 	function carregarSalas(salas, numLinhas, horaInicial) {
 		var $bodyGrid = $("<div />").addClass("calendar-body-grid");
 		salas.forEach(function(sala){
+			var dataArray = sala.data.split("-");
+			var dataDt = new Date(dataArray[0], (dataArray[1]-1), dataArray[2]);
 			var $calendarRoom = $("<div/>")
 									.addClass("calendar-room")	
 									.append($("<div />")
 										.addClass("calendar-room-title")
-										.text(sala.nome));
+										.text(getDiaSemana(dataDt)+ " "+dataArray[2]+"/"+dataArray[1])
+									);
 			
 			for(var i=0; i<numLinhas;i++){
 				$calendarRoom.append($("<div />").addClass("calendar-grid"));
@@ -67,15 +70,25 @@
 			});	
 			$bodyGrid.append($calendarRoom);
 		})
-		return $bodyGrid;
-		
+		return $bodyGrid;	
+	}
+
+	function getDiaSemana(dataCompleta) {
+		switch (dataCompleta.getDay()) {
+			case 0: return "Domingo";
+			case 1: return "Segunda-feira";
+			case 2: return "Terça-feira";
+			case 3: return "Quarta-feira";
+			case 4: return "Quinta-feira";
+			case 5: return "Sexta-feira";
+			case 6: return "Sábado";
+		}
 	}
 
 	$.fn.calendar = function(options){
 		var numLinhas = options.qtdLinhas;
 		var horaInicial = options.horaInicial;
-		$(this)
-			.append($("<div />").addClass("calendar-date").text("Segunda-feira, 9/10/2017"))
+		$(this)			
 			.append($("<div />").addClass("calendar-body")
 				.append(carregarGridHoras(options.qtdLinhas, options.horaInicial))
 				.append(carregarSalas(options.salas, options.qtdLinhas, options.horaInicial)));
