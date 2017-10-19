@@ -21,6 +21,7 @@ body{
     right:1vw;   
 	top:1vh;
 }
+
 .cabecalho p{
     font-size: 1.5em;
     text-align: left;
@@ -31,7 +32,11 @@ body{
 .tipo_evento h3{
     transform: rotate(-90deg);
     position: absolute;
+<<<<<<< HEAD
+    top: 500px;
+=======
     top: 55vh;
+>>>>>>> 31f40fa7329db9c38d577c54ad98718113a6e2c2
     left: -10vw;
 }
 .info_evento{
@@ -78,6 +83,7 @@ body{
 }
 .palestrante{
     width: 25vw;
+    min-height: 350px;
     border-radius: 10px;
     float: left;
     margin: 0 1vw;
@@ -87,6 +93,7 @@ body{
 }
 .palestrante img{
     width: 95px;
+    height: 95px;
     border-radius: 50px;
     position: relative;
     top: -5px;
@@ -96,17 +103,16 @@ body{
     position: absolute;
     top: 5px;
     left: 7vw;
+    right: 2vw; 
     text-align: center;
+    word-wrap: break-word;
 }
 .bioPalestrante p{
     padding: 10px 15px;
+    text-align: justify;
 }
 .bioPalestrante h4{
-    position: absolute;
-    top: 4vw;
-    left: 7vw;
-    padding: 10px 0 10px 0;
-}
-.bioPalestrante h4:last-child{
-    margin: 3vh 0;
+    text-align: center;
+    word-wrap: break-word;
+    margin: 0 10px;
 }
