@@ -5,7 +5,7 @@
   width: 100vw;
   font-family: arial;
   height: 100vh;
-  background-image: url('../../img/campus.jpg');
+  background-image: url('../../img/campus1.jpg');
   background-repeat: no-repeat;
   background-size: 111% 111%;
   background-position: center;
@@ -25,7 +25,7 @@
 .logo{
   display: block;
   margin: 0 auto;
-  width: 250px;
+  width: 400px;
   padding-bottom: 50px;
 }
 .subtitle{

@@ -1,14 +1,14 @@
 <?php
 
 	session_start();
-/*
+
     if($_SESSION['usuarioId']== null){
         unset($_SESSION['login']);
         unset($_SESSION['senha']);
         unset($_SESSION['nome']);
         header('location:index.html');
     }
-*/
+
 	$evento_id = $_GET["id"];
 
 ?>
@@ -21,29 +21,18 @@
 	<link rel="stylesheet" type="text/css" href="./css/tipo_evento/evento.css">
 	<link rel="stylesheet" type="text/css" id="folha"/> <!--Aqui será colocada a folha de estilo do evento específico-->
 	<link rel="stylesheet" href="./css/font-awesome-4.7.0/css/font-awesome.min.css">
-
+	<link rel="stylesheet" type="text/css" href="./js/plugins/message-plugin.css" />
 	<link rel="stylesheet" type="text/css" href="./js/bootstrap.min.css"/>
 
    <link href="https://fonts.googleapis.com/css?family=Monda:700" rel="stylesheet">
+	<link rel="stylesheet" href="./css/grid/desktop.css">
 
 	<script src="./js/jquery.min.js"></script>
+	<script src="./js/controller/grid.js"></script>
+	<script src="./js/controller/evento.js"></script>
+	<script src="./js/plugins/message-plugin.js"></script>
 	<script src="./js/bootstrap.min.js"></script>
 	<script>
-		function setFolha(tipoEvento) {
-			if(tipoEvento == "Palestra") 
-				$("#folha").attr("href", "./css/tipo_evento/palestra.css");
-			else if(tipoEvento == "Minicurso")
-				$("#folha").attr("href", "./css/tipo_evento/minicurso.css");
-			else if(tipoEvento == "Mesa Redonda")
-				$("#folha").attr("href", "./css/tipo_evento/mesaredonda.css");
-			else if(tipoEvento == "EXPOSUP")
-				$("#folha").attr("href", "./css/tipo_evento/exposup.css");
-			else if(tipoEvento == "EXPOTEC")
-				$("#folha").attr("href", "./css/tipo_evento/expotec.css");
-			else 
-				$("#folha").attr("href", "./css/tipo_evento/outros.css");
-		}
-
 		$(function(){
 			function getUrlVars() {
 				var vars = [], hash;
@@ -63,6 +52,8 @@
 				var evento_id = vars["id"];
 				$.get("./controller/evento_ctrl.php?act=get&id="+evento_id).done(function(data){
 					var evento = JSON.parse(data);
+console.log("evento ");
+console.log(evento);
 					//configurando folha de estilo
 					setFolha(evento.tipo);
 					$(".tipo_evento h3").text(evento.tipo);
@@ -71,6 +62,22 @@
 					$(".info_evento h3").text(evento.horarios[0].sala);
 					$(".description p").html(evento.descricao);
 					$(".buttonInscrever").attr("data-evento-id", evento_id);
+
+          $.each(evento.horarios, function(index, horario){
+            var dataStr = horario.data_inicio.split(" ")[0];
+            var horaInicioArray = horario.data_inicio.split(" ")[1].split(":");
+            var horaInicioStr = horaInicioArray[0]+":"+horaInicioArray[1];
+            var dataFormatada = dataStr.split("-")[2]+"/"+dataStr.split("-")[1]; 
+            var horaFimArray = horario.data_termino.split(" ")[1].split(":");
+            var horaFimStr = horaFimArray[0]+":"+horaFimArray[1];
+            //<li>Dia 23/10, 8:00 às 12:00</li>
+            $(".horarios ul")
+              .append($("<li />")
+                .text("Dia "+dataFormatada+", de "+horaInicioStr+" às "+horaFimStr));
+console.log(horario);
+
+          });
+
 					$.each(evento.autores, function(ind, autor){
 						var foto = (autor.foto!="")?autor.foto:"./img/perfilpadrao.jpg";
 						$("main")
@@ -88,42 +95,69 @@
 				});	
 			} 
 
+			$(".logout_but").click(function(){
+	          $.get("./controller/usuario_ctrl.php?act=logout")
+	            .done(function(data){
+	              window.location.href = "index.html";
+	          });
+	        });
+
 			$(".buttonInscrever").click(function(){
 				var eventoId = $(this).attr("data-evento-id");
 				var servico = "./controller/evento_ctrl.php";
 				var params = { "act": "inscricao"
 							, "evento_id": eventoId
-							, "participante_id": <?php echo $_SESSION['usuarioId'];?> };
+							, "usuario_id": <?php echo $_SESSION['usuarioId'];?> };
 						
 				$.get(servico, params)
-					.done(function(data){
-						console.log(data);
-						if(data==-1){
-							console.log("Limite de vagas atingido");
-						} else if(data==0) {
-							 console.log("Erro ao efetuar inscrição");
-						} else{
-							console.log("valor de data = " );
-							console.log(data);
-							console.log("Inscrição realizada com sucesso!");
-						}
-						
-					}).fail(function(data){
-						console.log("deu erro");
-						console.log(data);
-					});
+					.done(geraMensagem)
+					.fail(geraMensagem);
 			
 			});
+
+			posicionarHeader();
+        
+	        $('.slide').click(function() {
+	            $doc.animate({
+	                scrollTop: $( $.attr(this, 'href') ).offset().top
+	            }, 750);
+	        });
 		})
 	</script>
 </head>
-<body>
-	<header class="cabecalho">
-		<img src="./img/logo_extensao.png" alt="Logo"/>
-		<p><?php echo $_SESSION["nome"];?></p>
-		<button class="logout">Sair</button>
-	</header>
+<body class="fadeIn">
+	<header class="header">
+        <form class="header-form" method="post">
+            <input type="hidden" name="logout" value="ok">
+            <a class="escricoes_but" href="grid.php">Início</a>
+            <br />
+            <br />
+            <a class="escricoes_but" href="calendario.php">Minha Programação</a>
+            <button class="logout_but">Logout</button>
+        </form>
+        <div class="header-texts">
+            <h1 class="header-school">CEFET/RJ - Campus Nova Friburgo</h1>
+            <p class="usuario_name">
+                <?php echo substr($_SESSION["nome"],0,27);?>
+            </p>
+        </div>
+        <div class="header-logo">
+            <img class="header-logo-img" src="./img/logo_extensao.png" alt="logo">
+        </div>
+    </header>
+<!--
+    <div class="partition">
+        <ul class="partition-nav">
+            <h1 class="partition-h1">Programação Do Evento</h1>
+            <li><a class="slide" href="grid.php#segunda-feira">Segunda-feira</a></li>
+            <li><a class="slide" href="grid.php#terça-feira">Terça-feira</a></li>
+            <li><a class="slide" href="grid.php#quarta-feira">Quarta-feira</a></li>
+            <li><a class="slide" href="grid.php#todos-os-dias">Todos os dias</a></li>
+        </ul>
+    </div>
+-->
 	<main class="main">
+		<div class="message"></div>
 		<section class="evento">
             <div class="tipo_evento">
                 <h3><!---tipo do evento--></h3>
@@ -135,10 +169,13 @@
 
             
 		  </div>
-        </section>
-        <div class="description">
+    </section>
+    <div class="horarios">
+			<ul></ul>
+    </div>	
+    <div class="description">
 			<p></p>
-        </div>	
+    </div>	
 	</main>
 
 <div id="myModal" class="modal fade" role="dialog">
@@ -161,7 +198,44 @@
 
   </div>
 </div>
+<div id="modalSucesso" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Semana de Extensão 2017</h4>
+      </div>
+      <div class="modal-body">
+        <p>Inscrição efetuada com sucesso!</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div id="modalErroLimite" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Semana de Extensão 2017 - ERRO</h4>
+      </div>
+      <div class="modal-body">
+        <p>Limite de vagas atingido.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 <div id="modalError" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
@@ -172,11 +246,10 @@
         <h4 class="modal-title">Semana de Extensão 2017 - ERRO</h4>
       </div>
       <div class="modal-body">
-        <p>Não foi possível completar a inscrição. Por favor, cheque seus horários</p>
+        <p>Não foi possível completar a inscrição. Por favor, cheque seus horários.</p>
       </div>
       <div class="modal-footer">
-      	<button class="buttonInscrever" data-dismiss="modal">Inscrever-se</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
       </div>
     </div>
 

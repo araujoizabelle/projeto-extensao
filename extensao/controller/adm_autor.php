@@ -2,8 +2,13 @@
 	include("autor_ctrl.php");
 	
 	if($_GET["act"]=="add") {
-		cadastrarAutor($_POST["nome"], $_POST["foto"], $_POST["lattes"], $_POST["bio"]);
-		header("location:adm_autor.php?msg=autorCadastrado");
+		$result = cadastrarAutor($_POST["nome"], $_POST["foto"], $_POST["lattes"], $_POST["bio"]);
+		if($result) {
+			header("location:adm_autor.php?msg=autorCadastrado");	
+		} else {
+			header("location:adm_autor.php?msg=erro");	
+		}
+		
 	}
 
 ?>
@@ -43,7 +48,10 @@
   			if (vars["msg"]=="autorCadastrado") {
     			$(".message")
       				.message({message:"Autor cadastrado com sucesso!", class:"success"});
-  			} 
+  			} else if(vars["msg"]=="erro") {
+				$(".message")
+      				.message({message:"Autor cadastrado com sucesso!", class:"success"});
+  			}
     	});
     </script>
 

@@ -113,6 +113,12 @@
 			location.href = "evento.php?act=get&id="+evento_id;
 		});
 
+		$(this).on("click", ".remove", function(){
+			var nomeEvento = $(this).parent().children(".calendar-event p").text();
+			$(".modal-body span").text(nomeEvento);
+			$(".buttonDesistir").attr("data-evento", $(this).parent().children(".calendar-event p").attr("id"))
+			
+		})
 	}
 
 })(jQuery);

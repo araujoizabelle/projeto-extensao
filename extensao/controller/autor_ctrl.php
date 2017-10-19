@@ -10,7 +10,7 @@
 		
 		$autorId = mysql_insert_id($conexao);
 		fechar($conexao);
-		echo $autorId;
+		return $autorId;
 	}
 
 	function listarAutor() {

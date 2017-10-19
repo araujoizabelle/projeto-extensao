@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
   <head>
@@ -55,30 +56,39 @@
           });
         });
       }
-
-      function carregaGridDia(data, intervalo) {
+      function carregaDiasEventos(data, intervalo) {
         var dataArray = data.split("-");
         var ano = dataArray[0];
         var mes = parseInt(dataArray[1])-1;
         var diaDoMes = dataArray[2];
         var diaDate = new Date(ano, mes, diaDoMes);
-        //passo 1 identificar até que horas haverá eventos iniciando
-        var servico = "./controller/horario_ctrl.php?act=";
-        var params = {"act": "getHourLastEvent", "date": data};
-        $.get(servico, params).done(function(data){
-          //retirando as aspas do data;
-          var horarioTermino = parseInt(data.substring(1, data.length-1));
-          $divDia = $("<div/>")
+        $divDia = $("<div/>")
                       .addClass("day").attr("data-dia", diaDoMes)
                       .append($("<div />").addClass("day-date")
                         .append($("<h1/>").attr("id", getDiaSemana(diaDate))
                           .text(getDiaSemana(diaDate) +  "["+diaDoMes+"]")
                         )
                       );
+        $("main").append($divDia);
+        carregaGridDia($divDia, data, intervalo);
+      }
+
+      function carregaGridDia($div, data, intervalo) {
+        var dataArray = data.split("-");
+        var ano = dataArray[0];
+        var mes = parseInt(dataArray[1])-1;
+        var diaDoMes = dataArray[2];
+        //passo 1 identificar até que horas haverá eventos iniciando
+        var servico = "./controller/horario_ctrl.php?act=";
+        var params = {"act": "getHourLastEvent", "date": data};
+        $.get(servico, params).done(function(data){
+          //retirando as aspas do data;
+          var horarioTermino = parseInt(data.substring(1, data.length-1));
+          
           for(var i=8; i<horarioTermino; i+=intervalo) {
             var dataStr = ano+"-"+(mes+1)+"-"+diaDoMes;
             var seletor= dataStr+"_"+i;
-            $divDia
+            $div
               .append($("<div/>").addClass("day-grid")
                 .append($("<div />").addClass("grid")
                   .append($("<div />").addClass("grid-hour")
@@ -88,25 +98,94 @@
                     .attr("data-inicio",seletor))
                 )
               );
-            $("main").append($divDia);
+            
             carregarEventos($("div[data-inicio="+seletor+"]")
                           , dataStr+" "+i+":00"
-                          , dataStr+" "+(i+intervalo)+":00");
-            
+                          , dataStr+" "+(i+intervalo)+":00");      
           }
-          
-        });
-        
+        }); 
       }
-      $(function(){
 
-        carregaGridDia("2017-10-16", 2);
-        carregaGridDia("2017-10-17", 2);
-        carregaGridDia("2017-10-18", 2);
+      $(function(){
+        $.get("./controller/horario_ctrl.php?act=list")
+          .done(function(data){
+            var dataArray = JSON.parse(data);
+            console.log(dataArray);
+            $.each(dataArray, function(i, obj){
+              carregaDiasEventos(obj, 2);
+            })
+          });
+              
         
         $("main").on("click", ".event", function(){
           var evento_id = $(this).attr("id");
           window.location.href = "evento.php?act=get&id="+evento_id;
+        });
+
+
+
+        $(".event").mouseover(function(){
+          var tipo = $(this).children(".event-tipo").text();
+          if( tipo == "Palestra" ){
+            $(this).children(".evento-title").css("color", "#fff");
+            $(this).children(".event-tipo").css("color", "rgb( 45, 83, 23)");
+            $(this).children(".event-local").css("color", "rgb( 45, 83, 23)");
+            $(this).css("background-color", "rgb( 94, 176, 48)")
+          }
+          if( tipo == "Minicurso" ){
+            $(this).children(".evento-title").css("color", "#fff");
+            $(this).children(".event-tipo").css("color", "rgb( 97, 10, 20)");
+            $(this).children(".event-local").css("color", "rgb( 97, 10, 20)");
+            $(this).css("background-color", "rgb( 223, 22, 48)")
+          }
+          if( tipo == "Mesa redonda" ){
+            $(this).children(".evento-title").css("color", "#fff");
+            $(this).children(".event-tipo").css("color", "rgb( 95, 38, 12)");
+            $(this).children(".event-local").css("color", "rgb( 95, 38, 12)");
+            $(this).css("background-color", "rgb( 234, 95, 30)")
+          }
+          if( tipo == "Outra Atividade" ){
+            $(this).children(".evento-title").css("color", "#fff");
+            $(this).children(".event-tipo").css("color", "rgb( 13, 65, 94)");
+            $(this).children(".event-local").css("color", "rgb( 13, 65, 94)");
+            $(this).css("background-color", "rgb( 31, 147, 210)")
+          }
+          if( tipo == "EXPOSUP" || tipo == "EXPOTEC" ){
+            $(this).children(".evento-title").css("color", "#fff");
+            $(this).children(".event-tipo").css("color", "rgb( 97, 70, 10)");
+            $(this).children(".event-local").css("color", "rgb( 97, 70, 10)");
+            $(this).css("background-color", "rgb( 192, 142, 19)")
+          }
+          if( tipo == "Pôsters" ){
+            $(this).children(".evento-title").css("color", "#fff");
+            $(this).children(".event-tipo").css("color", "rgb( 0, 32, 15)");
+            $(this).children(".event-local").css("color", "rgb( 0, 32, 15");
+            $(this).css("background-color", "rgb( 0, 117, 54)")
+          }
+        });
+        $(".event").mouseleave(function(){
+          $(this).children(".evento-title").css("color", "#000");
+          $(this).children(".event-tipo").css("color", "#000");
+          $(this).children(".event-local").css("color", "#000");
+          $(this).css("background-color", "#eee");
+        });
+
+        var marginLogo = parseInt($(".header-logo").css("margin-left"));
+        var widthTexts = parseInt($(".header-texts").css("width"));
+        var widthForm = parseInt($(".header-form").css("width"));
+        var heightHeader = parseInt($(".header").css("height"));
+        var heightTexts = parseInt($(".header-texts").css("height")) +  20;
+        var heightForm = parseInt($(".header-form").css("height"));
+        $(".header-texts").css("left", (marginLogo - widthTexts)/2);
+        $(".header-texts").css("margin-top", (heightHeader - heightTexts)/2);
+        $(".header-form").css("right", (marginLogo - widthForm)/2);
+        $(".header-form").css("margin-top", (heightHeader - heightForm)/2);
+
+        var $doc = $('html, body');
+        $('.slide').click(function() {
+            $doc.animate({
+                scrollTop: $( $.attr(this, 'href') ).offset().top
+            }, 750);
         });
 
       });
@@ -114,122 +193,30 @@
   </head>
   <body class="fadeIn">
     <header class="header">
-      <p class="header-content">Cabeçalho</p>
+      <form class="header-form" method="post">
+        <input type="hidden" name="logout" value="ok">
+        <a class="escricoes_but" href="#">Minhas Programações</a>
+        <button class="logout_but">Logout</button>
+      </form>
+      <div class="header-texts">
+        <h1 class="header-school">CEFET/RJ - Campus Nova Friburgo</h1>
+        <p class="usuario_name">Usuário: Cabe até 27 caracteres</p>
+      </div>
+      <div class="header-logo">
+        <img class="header-logo-img" src="./img/logo_extensao.png" alt="logo">
+      </div>
     </header>
     <div class="partition">
-      <ul class="nav">
+      <ul class="partition-nav">
         <h1 class="partition-h1">Programação Do Evento</h1>
-        <li><a href="#">Segunda-feira</a></li>
-        <li><a href="#">Terça-feira</a></li>
+        <li><a class="slide" href="#segunda-feira">Segunda-feira</a></li>
+        <li><a class="slide" href="#terça-feira">Terça-feira</a></li>
+        <li><a class="slide" href="#quarta-feira">Quarta-feira</a></li>
+        <li><a class="slide" href="#todos-os-dias">Todos os dias</a></li>
       </ul>
-      <a href="calendario.php">Minha Programação</a>
     </div>
     <main class="content">
 
     </main>
   </body>
 </html>
-
-
-<!--      
-      <div class="day" data-dia="23">
-        <div class="day-date">
-          <h1 id="segunda-feira">segunda-feira [23]</h1>
-        </div>
-        <div class="day-grid">
-          <div class="grid">
-            <div class="grid-hour">
-              <h1>8:00</h1>
-            </div>
-            <div class="grid-event" name="2017-10-23_8">
-            </div>
-          </div>
-
-          <div class="grid">
-            <div class="grid-hour">
-              <h1>10:00</h1>
-            </div>
-            <div class="grid-event" name="2017-10-23_10">
-            </div>
-          </div>
-          <div class="grid">
-            <div class="grid-hour">
-              <h1>12:00</h1>
-            </div>
-            <div class="grid-event" name="2017-10-23_12">
-            </div>
-          </div>
-          <div class="grid">
-            <div class="grid-hour">
-              <h1>14:00</h1>
-            </div>
-            <div class="grid-event" name="2017-10-23_14">
-            </div>
-          </div>
-          <div class="grid">
-            <div class="grid-hour">
-              <h1>16:00</h1>
-            </div>
-            <div class="grid-event" name="2017-10-23_16">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="day">
-        <div class="day-date">
-          <h1 id="terça-feira">terça-feira [24]</h1>
-        </div>
-        <div class="day-grid">
-          <div class="grid">
-            <div class="grid-hour">
-              <h1>HORA</h1>
-            </div>
-            <div class="grid-event">
-              <div class="event">
-                <p class="event-tipo">TIPO</p>
-                <h1 class="evento-title">TÍTULO</h1>
-                <p class="event-local">LOCAL</p>
-                <span class="event-details"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></span>
-              </div>
-              <div class="event">
-                <p class="event-tipo">TIPO</p>
-                <h1 class="evento-title">TÍTULO</h1>
-                <p class="event-local">LOCAL</p>
-                <span class="event-details"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></span>
-              </div>
-              <div class="event">
-                <p class="event-tipo">TIPO</p>
-                <h1 class="evento-title">TÍTULO</h1>
-                <p class="event-local">LOCAL</p>
-                <span class="event-details"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></span>
-              </div>
-              <div class="event">
-                <p class="event-tipo">TIPO</p>
-                <h1 class="evento-title">TÍTULO</h1>
-                <p class="event-local">LOCAL</p>
-                <span class="event-details"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></span>
-              </div>
-            </div>
-          </div>
-          <div class="grid">
-            <div class="grid-hour">
-              <h1>HORA</h1>
-            </div>
-            <div class="grid-event">
-              <div class="event">
-                <p class="event-tipo">TIPO</p>
-                <h1 class="evento-title">TÍTULO</h1>
-                <p class="event-local">LOCAL</p>
-                <span class="event-details"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></span>
-              </div>
-              <div class="event">
-                <p class="event-tipo">TIPO</p>
-                <h1 class="evento-title">TÍTULO</h1>
-                <p class="event-local">LOCAL</p>
-                <span class="event-details"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
--->

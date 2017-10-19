@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html>
-  <head>
+  <head>s
     <meta charset="utf-8">
     <title>Cadastro</title>
     <link rel="stylesheet" href="./css/reset.css">
-    <link rel="stylesheet" href="./css/index/desktop.css">
+    <link rel="stylesheet" href="./css/cadastro/cadastro.css">
     <script src="./js/jquery.min.js"></script>
-    <script src="./js/index/desktop.js"></script>
+    <script src="./js/cadastro/cadastro.js"></script>
   </head>
   <body class="fadeIn">
     <form class="form" method="POST"  action="./controller/usuario_ctrl.php?act=add">
-      <h1 class="title">Entre Com Sua Conta!</h1>
-      <div class="email">
-        <label class="labelEmail">Nome</label>
-        <input class="inputEmail" type="text" name="nome" placeholder="Digite Seu Nome" required>
+      <img class="logo" src="./img/logo_extensao.png" alt="Semana de Extensão 2017">
+      <p class="subtitle">Cefet/RJ - Campus Nova Friburgo</p>
+      <div class="nome">
+        <label class="labelNome">Nome Completo</label>
+        <input class="inputNome" type="text" name="nome" placeholder="Digite Seu Nome Completo" required>
       </div>
       <div class="email">
         <label class="labelEmail">E-mail</label>
         <input class="inputEmail" type="email" name="email" placeholder="Digite Seu Email" required>
       </div>
-	  <div class="confirmaemail">
-        <label class="labelEmail">Confirmar E-mail</label>
-        <input class="inputEmail" type="email" name="email" placeholder="Confirme o seu Email" required>
+	    <div class="confirmaEmail">
+        <label class="labelConfirmEmail">Confirmar E-mail</label>
+        <input class="inputConfirmEmail" type="email" name="email" placeholder="Confirme o seu Email" required>
       </div>
       <div class="senha">
         <label class="labelSenha">Senha</label>
         <input class="inputSenha" type="password" name="senha" placeholder="Digite Sua Senha" required>
       </div>
-	   <div class="confirmasenha">
-        <label class="labelSenha">Confirmar Senha</label>
-        <input class="inputSenha" type="password" name="senha" placeholder="Confirme a sua Senha" required>
+	    <div class="confirmasenha">
+        <label class="labelConfirmSenha">Confirmar Senha</label>
+        <input class="inputConfirmSenha" type="password" name="senha" placeholder="Confirme a sua Senha" required>
       </div>
       <input class="send" type="submit" name="send" value="Cadastrar">
-      
     </form>
   </body>
 </html>

@@ -15,7 +15,13 @@
     	fechar($conexao);
     	return $result;
     }
-
+    function logout() {
+        unset($_SESSION['usuarioId']);
+        unset($_SESSION['login']);
+        unset($_SESSION['senha']);
+        unset($_SESSION['nome']);
+        session_destroy();
+    }
     function cadastrar($nome, $email, $senha) {
     	$conexao = abrir();
 
@@ -73,6 +79,8 @@
     	} else {
     		header("location:../index.html?msg=emailJaCadastrado");	
     	}
+    } elseif($acao == "logout") {
+        logout();
     }
     
     

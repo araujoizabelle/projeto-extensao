@@ -18,33 +18,41 @@
         $sql .= " horarioEventoDesejado.data_termino as fimEvento ";
         $sql .= " FROM tb_horarioEvento horarioEventoDesejado ";
         $sql .= " WHERE horarioEventoDesejado.evento_id = ".$evento_id;
+
         $query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
         
-        $row = mysqli_fetch_array($query, MYSQLI_ASSOC);
-        $inicioEvento = $row["inicioEvento"];
-        $fimEvento = $row["fimEvento"];
+        $horarioDisponivel = 1; 
 
-        $temConflito = false; 
-        
-        $sql  = "SELECT h.data_inicio as inicio, h.data_termino as fim "; 
-        $sql .= " FROM tb_inscricao i inner join tb_horarioEvento h ";
-        $sql .= " on h.evento_id = i.evento_id AND i.usuario_id = ".$usuario_id;
+        while($row = mysqli_fetch_array($query, MYSQLI_ASSOC)){
+            $inicioEvento = $row["inicioEvento"];
+            $fimEvento = $row["fimEvento"];
+            
+            $sql  = "SELECT h.data_inicio as inicio, h.data_termino as fim "; 
+            $sql .= " FROM tb_inscricao i inner join tb_horarioEvento h ";
+            $sql .= " on h.evento_id = i.evento_id AND i.usuario_id = ".$usuario_id;
+            $sql .= " ORDER BY h.data_inicio ASC ";
 
-        $query1 = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
+            $query1 = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
 
-
-        while($row1 = mysqli_fetch_array($query1, MYSQLI_ASSOC)) {
-            $inicio = $row1["inicio"];
-            $fim = $row1["fim"];
-
-            if((($inicioEvento <= $inicio)&&($fimEvento>=$fim)) ||
-                (($fimEvento>$inicio)&&($fimEvento<=$fim)) ||
-                (($inicioEvento>=$inicio)&&($inicioEvento<$fim))) {
-                $temConflito = true;
+    //echo "<hr/>evento data do evento desejado: ".$inicioEvento.", fim: ".$fimEvento."<br/>";
+            while($row1 = mysqli_fetch_array($query1, MYSQLI_ASSOC)) {
+                $inicio = $row1["inicio"];
+                $fim = $row1["fim"];
+    //echo " data evento inscrito ". $inicio.", fim ".$fim."<br/>";
+                if(($inicioEvento <= $inicio)&&($fimEvento>$inicio)){
+    //echo "começa antes e termina depois um evento inscrito <br/>";
+                    $horarioDisponivel =  0;
+                    break;
+                } 
+                if(($inicioEvento>=$inicio)&&($inicioEvento<$fim)) {
+    //echo "inicia depois de um evento ter iniciado <br/>";
+                    $horarioDisponivel =  0;
+                    break;
+                }
             }
         }
         fechar($conexao);
-        return $temConflito;
+        return $horarioDisponivel;
 
     }
 
@@ -77,10 +85,10 @@
             return (-1);
         }
 
-        if (isHorarioDisponivel($evento_id, $usuario_id)) {
+        if (isHorarioDisponivel($evento_id, $usuario_id)==true) {          
             $sql  = "INSERT INTO tb_inscricao (usuario_id, evento_id) VALUES ";
             $sql .= "(".$usuario_id.",".$evento_id.")";
-        
+
             $query = mysqli_query($conexao, $sql); //or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
         
             $num_rows = mysqli_affected_rows($conexao);
@@ -92,9 +100,25 @@
             } else {
                 return 1;
             }
+        } else {
+            return 0;
         }
-        
+    }
 
+    function cancelarInscricao($evento_id, $usuario_id) {
+        $conexao = abrir();
+        $sql  = "DELETE FROM tb_inscricao WHERE ";
+        $sql .= " usuario_id = ".$usuario_id. " AND evento_id = ".$evento_id;
+        $query = mysqli_query($conexao, $sql); //or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
+        
+        $num_rows = mysqli_affected_rows($conexao);
+
+        fechar($conexao);
+
+        if ($num_rows<1) {
+            return 0;
+        }
+        return 1;
     }
 
     function get($evento_id) {      
@@ -144,7 +168,7 @@
 
     //listar todas as datas em que o usuario tem inscricoes
     function listarDatasInscricoes($usuario_id) {
-$usuario_id = 2;
+//$usuario_id = 2;
         $conexao = abrir();
         $sql  = "SELECT distinct DATE(h.data_inicio) as inicio ";
         $sql .= " FROM tb_horarioEvento h inner join tb_inscricao i ";
@@ -162,7 +186,7 @@ $usuario_id = 2;
     }
 
     function listarMeusEventos($usuario_id) {
-$usuario_id = 2;
+//$usuario_id = 2;
         $conexao = abrir();
         $dataArray = listarDatasInscricoes($usuario_id);
         $objArray = array();
@@ -178,7 +202,6 @@ $usuario_id = 2;
             $sql .= " WHERE i.usuario_id = ".$usuario_id;
             $sql .= " AND DATE(h.data_inicio) = '".$data. "' ";
             $sql .= " ORDER BY h.data_inicio ASC ";
-
 
             $query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
             $eventosArray = array();
@@ -197,6 +220,7 @@ $usuario_id = 2;
                                    , "programacao" => $eventosArray));
         }
         $result = json_encode($objArray);
+
         fechar($conexao);
         
         return $result;
@@ -205,7 +229,7 @@ $usuario_id = 2;
     function listHorarioEvento($evento_id) {
         $conexao = abrir();
         $sql =  " SELECT h.*, s.nome as sala FROM tb_horarioEvento h inner join tb_sala s ";
-        $sql .= " on s.id = h.sala_id WHERE h.id = ".$evento_id;
+        $sql .= " on s.id = h.sala_id WHERE h.evento_id = ".$evento_id;
         $horarioList = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
         
         $result = array();
@@ -295,7 +319,7 @@ $usuario_id = 2;
         $fimTime = strtotime($data_fim);
         $termino = date('Y-m-d H:i',$fimTime);
 
-        $sql  = " SELECT h.data_inicio as inicio, e.id, e.nome, t.nome as tipo, s.nome as local ";
+        $sql  = " SELECT h.data_inicio as inicio, h.data_termino as fim, e.id, e.nome, t.nome as tipo, s.nome as local ";
         $sql .= " FROM tb_horarioEvento h inner join tb_evento e ";
         $sql .= " on h.evento_id = e.id inner join tb_tipoEvento t ";
         $sql .= " on t.id = e.tipo_evento_id inner join tb_sala s ";
@@ -309,9 +333,11 @@ $usuario_id = 2;
         $eventosArray = array();
         while($row = mysqli_fetch_array($query, MYSQLI_ASSOC)) {
             $inicio = new DateTime($row["inicio"]);
+            $fim = new DateTime($row["fim"]);
             array_push($eventosArray, array("id" => $row["id"]
                                         , "nome" => utf8_encode($row["nome"])
                                         , "inicio" => $inicio->format('H:i')
+                                        , "fim" => $fim->format('H:i')
                                         , "tipo" => utf8_encode($row["tipo"])
                                         , "local" => utf8_encode($row["local"])));
         }
@@ -344,58 +370,28 @@ $usuario_id = 2;
     } elseif ($acao == "listByDateTime"){
         echo listaPorDataHorario($_GET["begin"], $_GET["end"]);
     } elseif ($acao == "inscricao") {
-        
-        echo inscrever($_GET["evento_id"], $_GET["participante_id"]);
-        
-    } elseif($acao=="listMyEvents") {
-        echo listarMeusEventos($_SESSION["usuarioId"]);
-    } elseif ($acao=="teste") {
-         echo listarDatasInscricoes($usuario_id);
-    }
-
-
-/*
-    function isHorarioDisponivel($evento_id, $usuario_id){
-        $conexao = abrir();
-
-        $sqlDataNovo  = " select h.data_inicio, h.data_termino ";
-        $sqlDataNovo .= " from tb_evento e, tb_horarioEvento h ";
-        $sqlDataNovo .= " where e.id = h.evento_id and e.id = ".$evento_id;
-
-        $sqlDataInscrito  = " select h.data_inicio, h.data_termino ";
-        $sqlDataInscrito .= " from tb_inscricao i, tb_horarioEvento h";
-        $sqlDataInscrito .= " where i.evento_id = h.evento_id and ";
-        $sqlDataInscrito .= " i.usuario_id = ".$usuario_id;
-
-
-        $horarioNovoList = mysqli_query($conexao, $sqlDataNovo) or die ("Deu erro na query: ".$sqlDataNovo.' '.mysqli_error($conexao));
-
-        $horarioInscritoList = mysqli_query($conexao, $sqlDataInscrito) or die ("Deu erro na query: ".$sqlDataInscrito.' '.mysqli_error($conexao));
-        
-        while ($rowNovo = mysqli_fetch_array($horarioNovoList, MYSQLI_ASSOC)) {
-            $dataNovoInicio = strtotime($rowNovo["data_inicio"]);
-            $dataNovoTermino = strtotime($rowNovo["data_termino"]);
-
-            while ($rowInscrito = mysqli_fetch_array($horarioInscritoList, MYSQLI_ASSOC)) {
-               
-                $dataInscritoInicio = strtotime($rowInscrito["data_inicio"]);
-                $dataInscritoTermino = strtotime($rowInscrito["data_termino"]);
-
-                if($dataNovoInicio<=$dataInscritoTermino
-                    && $dataNovoInicio>=$dataInscritoInicio) {
-                    fechar($conexao);
-                    return false;
-                }
-                if($dataNovoTermino<=$dataInscritoTermino 
-                    && $dataNovoTermino>=$dataInscritoInicio) {
-                    fechar($conexao);
-                    return false;
-                }
-            }
+        $result = inscrever($_GET["evento_id"], $_GET["usuario_id"]);
+        //header("location:../evento.php?data=".$result); 
+        echo $result;
+        /*
+        if($result == -1) {
+            echo "limiteEsgotado"; 
+        } elseif($result==0) {
+            echo "erroAoInserir"; 
+        } elseif ($result==1) {
+            echo "sucesso"; 
         }
-        fechar($conexao);
-        return true;
+        */
+    } elseif($acao=="listMyEvents") {
+        echo listarMeusEventos($_GET["usuario_id"]);
+    } elseif($acao=="removeInscricao"){
+        echo cancelarInscricao($_GET["evento_id"], $_GET["usuario_id"]);
+    } elseif ($acao=="teste") {
+        $evento_id = $_GET["evento_id"];
+        $usuario_id = $_GET["usuario_id"];
+        isHorarioDisponivel($evento_id, $usuario_id);
+//         echo listarDatasInscricoes($usuario_id);
     }
-*/
+
 
 ?>

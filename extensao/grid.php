@@ -1,14 +1,14 @@
 <?php
 
   session_start();
-/*
+
     if($_SESSION['usuarioId']== null){
         unset($_SESSION['login']);
         unset($_SESSION['senha']);
         unset($_SESSION['nome']);
         header('location:index.html');
     }
-*/
+
   $evento_id = $_GET["id"];
 
 ?>
@@ -22,104 +22,11 @@
     <link rel="stylesheet" href="./css/grid/desktop.css">
     <link rel="stylesheet" href="./font/css/font-awesome.min.css">
     <script src="./js/jquery.min.js"></script>
-    <style>
-      .day-grid:nth-child(2n) {
-        background-color: #ddd;
-      }
 
-      .event:hover{
-        background-color: #ddf;
-        transition: all 0.5s;
-      }
+    <script src="./js/controller/grid.js"></script>
 
-    </style>
-    <!--
-    <script src="./js/grid/desktop.js"></script>
-  -->
     <script>
-      function getDiaSemana(dia) {
-        var diaDaSemana = dia.getDay();
-        switch (diaDaSemana){
-          case 0: return "domingo";
-          case 1: return "segunda-feira";
-          case 2: return "terça-feira";
-          case 3: return "quarta-feira";
-          case 4: return "quinta-feira";
-          case 5: return "sexta-feira";
-          case 6: return "sábado";
-        }
-      }
       
-      function carregarEventos($div, inicio, fim) {
-        var servico = "./controller/evento_ctrl.php";
-        var params = {"act": "listByDateTime", "begin": inicio, "end":fim};
-        $.get(servico, params).done(function(data){
-          var eventosArray = JSON.parse(data);
-          $.each(eventosArray,function(index, evento){
-            $div
-              .append($("<div/>").addClass("event").attr("id", evento.id)
-                .append($("<p/>").addClass("event-tipo").text(evento.tipo + " " +evento.inicio))
-                //.append($("<p/>").addClass("event-inicio").text())
-                .append($("<h1/>").addClass("evento-title").text(evento.nome))
-                .append($("<p/>").addClass("event-local").text(evento.local))
-                .append($("<span />").addClass("event-details")
-                  .append($("<i/>").addClass("fa fa-paper-plane-o").attr("aria-hidden", "true")
-                    )
-                )
-              );
-          });
-        });
-      }
-      function carregaDiasEventos(data, intervalo) {
-        var dataArray = data.split("-");
-        var ano = dataArray[0];
-        var mes = parseInt(dataArray[1])-1;
-        var diaDoMes = dataArray[2];
-        var diaDate = new Date(ano, mes, diaDoMes);
-        $divDia = $("<div/>")
-                      .addClass("day").attr("data-dia", diaDoMes)
-                      .append($("<div />").addClass("day-date")
-                        .append($("<h1/>").attr("id", getDiaSemana(diaDate))
-                          .text(getDiaSemana(diaDate) +  "["+diaDoMes+"]")
-                        )
-                      );
-        $("main").append($divDia);
-        carregaGridDia($divDia, data, intervalo);
-      }
-
-      function carregaGridDia($div, data, intervalo) {
-        var dataArray = data.split("-");
-        var ano = dataArray[0];
-        var mes = parseInt(dataArray[1])-1;
-        var diaDoMes = dataArray[2];
-        //passo 1 identificar até que horas haverá eventos iniciando
-        var servico = "./controller/horario_ctrl.php?act=";
-        var params = {"act": "getHourLastEvent", "date": data};
-        $.get(servico, params).done(function(data){
-          //retirando as aspas do data;
-          var horarioTermino = parseInt(data.substring(1, data.length-1));
-          
-          for(var i=8; i<horarioTermino; i+=intervalo) {
-            var dataStr = ano+"-"+(mes+1)+"-"+diaDoMes;
-            var seletor= dataStr+"_"+i;
-            $div
-              .append($("<div/>").addClass("day-grid")
-                .append($("<div />").addClass("grid")
-                  .append($("<div />").addClass("grid-hour")
-                    .append($("<h1/>").text(i+":00"))
-                  )
-                  .append($("<div/>").addClass("grid-event")
-                    .attr("data-inicio",seletor))
-                )
-              );
-            
-            carregarEventos($("div[data-inicio="+seletor+"]")
-                          , dataStr+" "+i+":00"
-                          , dataStr+" "+(i+intervalo)+":00");      
-          }
-        }); 
-      }
-
       $(function(){
         $.get("./controller/horario_ctrl.php?act=list")
           .done(function(data){
@@ -129,11 +36,30 @@
               carregaDiasEventos(obj, 2);
             })
           });
-              
+        
+        $(".logout_but").click(function(){
+          $.get("./controller/usuario_ctrl.php?act=logout")
+            .done(function(data){
+              window.location.href = "index.html";
+          });
+        });
         
         $("main").on("click", ".event", function(){
           var evento_id = $(this).attr("id");
+
           window.location.href = "evento.php?act=get&id="+evento_id;
+        });
+        
+        $("main").on("mouseover",".event",onEventOver);
+
+        $("main").on("mouseleave",".event",onEventLeave);
+        
+        posicionarHeader();
+        
+        $('.slide').click(function() {
+            $doc.animate({
+                scrollTop: $( $.attr(this, 'href') ).offset().top
+            }, 750);
         });
 
       });
@@ -141,14 +67,31 @@
   </head>
   <body class="fadeIn">
     <header class="header">
-      <p class="header-content">Cabeçalho</p>
+      <form class="header-form" method="post">
+        <input type="hidden" name="logout" value="ok">
+        <a class="escricoes_but" href="calendario.php">Minha Programação</a>
+        <button class="logout_but">Logout</button>
+      </form>
+      <div class="header-texts">
+        <h1 class="header-school">CEFET/RJ - Campus Nova Friburgo</h1>
+        <p class="usuario_name">
+          <?php echo substr($_SESSION["nome"],0,27);?>
+        </p>
+      </div>
+      <div class="header-logo">
+        <img class="header-logo-img" src="./img/logo_extensao.png" alt="logo">
+      </div>
     </header>
+    
     <div class="partition">
-      <ul class="nav">
+      <ul class="partition-nav">
         <h1 class="partition-h1">Programação Do Evento</h1>
-        <li><a href="#">Segunda-feira</a></li>
-        <li><a href="#">Terça-feira</a></li>
-        <li><a href="#">Quarta-feira</a></li>
+        <li><a class="slide" href="#segunda-feira">Segunda-feira</a></li>
+        <li><a class="slide" href="#terça-feira">Terça-feira</a></li>
+        <li><a class="slide" href="#quarta-feira">Quarta-feira</a></li>
+        <!--
+        <li><a class="slide" href="#todos-os-dias">Todos os dias</a></li>
+      -->
       </ul>
     </div>
     <main class="content">

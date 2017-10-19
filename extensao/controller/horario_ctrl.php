@@ -13,7 +13,7 @@
         return json_encode($result);
 
 	}
-
+	
 	function getHourLastEvent($date) {
 		$conexao = abrir();
 		$time = strtotime($date);
