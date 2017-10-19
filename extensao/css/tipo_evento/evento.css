@@ -32,11 +32,7 @@ body{
 .tipo_evento h3{
     transform: rotate(-90deg);
     position: absolute;
-<<<<<<< HEAD
     top: 500px;
-=======
-    top: 55vh;
->>>>>>> 31f40fa7329db9c38d577c54ad98718113a6e2c2
     left: -10vw;
 }
 .info_evento{
@@ -54,6 +50,7 @@ body{
 .info_evento h3{
     flex-grow:  0.1;
     max-width: 70px;
+    
 }
 .buttonInscrever{
     flex-grow: 0.1;
@@ -115,4 +112,5 @@ body{
     text-align: center;
     word-wrap: break-word;
     margin: 0 10px;
+    font-size: 0.8em;
 }
