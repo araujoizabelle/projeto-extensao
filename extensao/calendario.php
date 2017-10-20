@@ -19,11 +19,13 @@ if(isset($_SESSION['usuarioId'])== null){
 <html>
   <head>
     <meta charset="utf-8"/>
+      <title>Sua programação</title>
     <link rel="stylesheet" type="text/css" href="./js/plugins/calendar-plugin.css" />
     <link rel="stylesheet" href="./css/grid/desktop.css">
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./font/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="./js/bootstrap.min.css"/>
+    <link rel="icon" type="image/png" href="./img/logo_extensao.png"/>
     <script src="./js/jquery.min.js"></script>
     <script src="./js/bootstrap.min.js"></script>
     <script src="./js/plugins/calendar-plugin.js"></script>

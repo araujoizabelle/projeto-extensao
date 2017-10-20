@@ -18,6 +18,7 @@
   <head>
     <meta charset="utf-8" />
     <title>Programação</title>
+   <link rel="icon" type="image/png" href="./img/logo_extensao.png">
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/grid/desktop.css">
     <link rel="stylesheet" href="./font/css/font-awesome.min.css">
