@@ -2,14 +2,13 @@
 
   session_start();
 
-    if($_SESSION['usuarioId']== null){
+    if((!isset ($_SESSION['login']) == true) &&($_SESSION['usuarioId']== null)){
         unset($_SESSION['login']);
-        unset($_SESSION['senha']);
         unset($_SESSION['nome']);
         header('location:index.html');
     }
-
-  $evento_id = $_GET["id"];
+//echo "Usuario da sessao ".$_SESSION["usuarioId"];
+//  $evento_id = $_GET["id"];
 
 ?>
 
@@ -17,6 +16,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
     <title>Programação</title>
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/grid/desktop.css">
@@ -26,41 +26,17 @@
     <script src="./js/controller/grid.js"></script>
 
     <script>
-      
       $(function(){
-        $.get("./controller/horario_ctrl.php?act=list")
-          .done(function(data){
-            var dataArray = JSON.parse(data);
-            console.log(dataArray);
-            $.each(dataArray, function(i, obj){
-              carregaDiasEventos(obj, 2);
-            })
-          });
-        
-        $(".logout_but").click(function(){
-          $.get("./controller/usuario_ctrl.php?act=logout")
-            .done(function(data){
-              window.location.href = "index.html";
-          });
-        });
-        
-        $("main").on("click", ".event", function(){
-          var evento_id = $(this).attr("id");
-
-          window.location.href = "evento.php?act=get&id="+evento_id;
-        });
-        
-        $("main").on("mouseover",".event",onEventOver);
-
-        $("main").on("mouseleave",".event",onEventLeave);
-        
         posicionarHeader();
+        carregarPagina();
         
-        $('.slide').click(function() {
-            $doc.animate({
-                scrollTop: $( $.attr(this, 'href') ).offset().top
-            }, 750);
-        });
+        $(".logout_but").click(onButtonLogoutClick);
+        
+        $("main").on("click", ".event", onEventClick);
+        $("main").on("mouseover",".event",onEventOver);
+        $("main").on("mouseleave",".event",onEventLeave);
+
+        $('.slide').click(onSlideClick);
 
       });
     </script>
@@ -99,107 +75,3 @@
     </main>
   </body>
 </html>
-
-
-<!--      
-      <div class="day" data-dia="23">
-        <div class="day-date">
-          <h1 id="segunda-feira">segunda-feira [23]</h1>
-        </div>
-        <div class="day-grid">
-          <div class="grid">
-            <div class="grid-hour">
-              <h1>8:00</h1>
-            </div>
-            <div class="grid-event" name="2017-10-23_8">
-            </div>
-          </div>
-
-          <div class="grid">
-            <div class="grid-hour">
-              <h1>10:00</h1>
-            </div>
-            <div class="grid-event" name="2017-10-23_10">
-            </div>
-          </div>
-          <div class="grid">
-            <div class="grid-hour">
-              <h1>12:00</h1>
-            </div>
-            <div class="grid-event" name="2017-10-23_12">
-            </div>
-          </div>
-          <div class="grid">
-            <div class="grid-hour">
-              <h1>14:00</h1>
-            </div>
-            <div class="grid-event" name="2017-10-23_14">
-            </div>
-          </div>
-          <div class="grid">
-            <div class="grid-hour">
-              <h1>16:00</h1>
-            </div>
-            <div class="grid-event" name="2017-10-23_16">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="day">
-        <div class="day-date">
-          <h1 id="terça-feira">terça-feira [24]</h1>
-        </div>
-        <div class="day-grid">
-          <div class="grid">
-            <div class="grid-hour">
-              <h1>HORA</h1>
-            </div>
-            <div class="grid-event">
-              <div class="event">
-                <p class="event-tipo">TIPO</p>
-                <h1 class="evento-title">TÍTULO</h1>
-                <p class="event-local">LOCAL</p>
-                <span class="event-details"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></span>
-              </div>
-              <div class="event">
-                <p class="event-tipo">TIPO</p>
-                <h1 class="evento-title">TÍTULO</h1>
-                <p class="event-local">LOCAL</p>
-                <span class="event-details"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></span>
-              </div>
-              <div class="event">
-                <p class="event-tipo">TIPO</p>
-                <h1 class="evento-title">TÍTULO</h1>
-                <p class="event-local">LOCAL</p>
-                <span class="event-details"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></span>
-              </div>
-              <div class="event">
-                <p class="event-tipo">TIPO</p>
-                <h1 class="evento-title">TÍTULO</h1>
-                <p class="event-local">LOCAL</p>
-                <span class="event-details"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></span>
-              </div>
-            </div>
-          </div>
-          <div class="grid">
-            <div class="grid-hour">
-              <h1>HORA</h1>
-            </div>
-            <div class="grid-event">
-              <div class="event">
-                <p class="event-tipo">TIPO</p>
-                <h1 class="evento-title">TÍTULO</h1>
-                <p class="event-local">LOCAL</p>
-                <span class="event-details"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></span>
-              </div>
-              <div class="event">
-                <p class="event-tipo">TIPO</p>
-                <h1 class="evento-title">TÍTULO</h1>
-                <p class="event-local">LOCAL</p>
-                <span class="event-details"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
--->

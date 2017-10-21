@@ -1,0 +1,103 @@
+body {
+    background-color: #fff;
+}
+h3 {
+    text-align: center;
+}
+.folha {
+    width: 1000px;
+    border: #000 solid 1px;
+    margin:0 auto;
+}
+
+.logo-cefet{
+    width: 200px;
+}
+.logo-extensao {
+    width: 300px;
+}
+
+thead th h1, thead th h4 {
+    width: 800px;
+    margin:5px 0;
+}
+thead th h1 {
+    font-size: 1.5em;
+}
+thead th h4 {
+    font-weight:normal;
+    font-style: italic;
+}
+.cabecalho {
+    border-bottom: #000 solid 3px;
+}
+.cabecalho td {
+    width: 50px;
+}
+.cabecalho img {
+    margin-bottom: 20px;
+}
+
+.evento th, .evento-detalhes th {
+    text-align: right;
+}
+.evento th, .evento td, .evento-detalhes th, .evento-detalhes td {
+    border-top: #000 solid 1px;
+    padding: 10px;
+}
+.evento td {
+    text-align: center;
+    font-weight: bold;
+}
+.evento-responsavel {
+    width: 230px;
+}
+.evento-hora {
+    width: 50px;
+}
+.evento-hora-val{
+    width: 85px;
+}
+
+.evento-hora~td {
+    text-align: center;
+    width: 80px    
+}
+tbody td, tbody th {
+    border: #000 solid 1px;
+}
+
+.participantes {
+    width: 1000px;
+    border: #000 solid 1px;
+    margin:0 auto;
+    padding: 0;
+}
+.participantes tr:nth-child(2n) {
+    background-color: #eee;
+}
+.participantes th, .participantes td {
+    border: none;
+}
+.participantes th {
+    border-bottom: 1px solid #000;
+}
+.participantes td {
+    border-right: 1px solid #000;
+    padding: 5px;
+    text-align: center;
+}
+.participantes td:last-child {
+    border-right: none;
+}
+
+.participante-nome{
+    width: 400px;
+}
+.participante-matricula{
+    width: 200px;
+}
+.participante-assinatura{
+    width: 400px;
+}
+

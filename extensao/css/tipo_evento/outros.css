@@ -8,7 +8,7 @@ body{
     background-color: #ededed;
 }
 .tipo_evento h3{
-	font-size: 6em;
+    font-size: 4em;
     text-transform: uppercase;
 }
 .info_evento h2, .description{  
@@ -17,6 +17,7 @@ body{
 .info_evento h3, .buttonInscrever{
     background-color: #f9f9f9;
     font-size:14pt;
+    top: 68vh;
 }
 .evento{
     text-transform: uppercase;

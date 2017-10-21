@@ -1,13 +1,13 @@
 
 *{
-	margin: 0;
+    margin: 0;
 }
 body{
     width: 98vw;
 }
 .cabecalho{
-	text-align: center;
-	position: relative;
+    text-align: center;
+    position: relative;
 }
 .cabecalho img{
     width: 500px;
@@ -17,10 +17,11 @@ body{
     left: 5vw;
 }
 .cabecalho button{
-	position: absolute;
+    position: absolute;
     right:1vw;   
-	top:1vh;
+    top:1vh;
 }
+
 .cabecalho p{
     font-size: 1.5em;
     text-align: left;
@@ -31,7 +32,7 @@ body{
 .tipo_evento h3{
     transform: rotate(-90deg);
     position: absolute;
-    top: 55vh;
+    top: 500px;
     left: -10vw;
 }
 .info_evento{
@@ -49,6 +50,7 @@ body{
 .info_evento h3{
     flex-grow:  0.1;
     max-width: 70px;
+    
 }
 .buttonInscrever{
     flex-grow: 0.1;
@@ -78,6 +80,7 @@ body{
 }
 .palestrante{
     width: 25vw;
+    min-height: 350px;
     border-radius: 10px;
     float: left;
     margin: 0 1vw;
@@ -87,6 +90,7 @@ body{
 }
 .palestrante img{
     width: 95px;
+    height: 95px;
     border-radius: 50px;
     position: relative;
     top: -5px;
@@ -96,17 +100,17 @@ body{
     position: absolute;
     top: 5px;
     left: 7vw;
+    right: 2vw; 
     text-align: center;
+    word-wrap: break-word;
 }
 .bioPalestrante p{
     padding: 10px 15px;
+    text-align: justify;
 }
 .bioPalestrante h4{
-    position: absolute;
-    top: 4vw;
-    left: 7vw;
-    padding: 10px 0 10px 0;
-}
-.bioPalestrante h4:last-child{
-    margin: 3vh 0;
+    text-align: center;
+    word-wrap: break-word;
+    margin: 0 10px;
+    font-size: 0.8em;
 }

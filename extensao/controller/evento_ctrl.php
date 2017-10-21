@@ -129,10 +129,25 @@
         
         $query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
         
-        $result = mysqli_fetch_array($query, MYSQLI_ASSOC); //MYSQLI_BOTH  //MYSQLI_NUM //MYSQLI_ASSOC
+        $result = mysqli_fetch_array($query, MYSQLI_ASSOC); 
         fechar($conexao);
     
         return $result;
+    }
+
+    function isInscrito($evento_id, $usuario_id) {
+        $conexao = abrir();
+        $sql = " SELECT * FROM tb_inscricao ";
+        $sql .= " WHERE usuario_id = ".$usuario_id." AND evento_id = ".$evento_id;
+        $query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
+
+        $result = mysqli_fetch_array($query, MYSQLI_ASSOC); 
+        fechar($conexao);
+        if($result) {
+            return 1;
+        }
+        return 0;
+        
     }
 
     function getTipoEvento($tipo_evento_id) {
@@ -344,6 +359,37 @@
         return json_encode($eventosArray);
     }
 
+    function listaEventosPorData($data_evento) {
+        $conexao = abrir();
+        $inicio = $data_evento." 00:00:00";
+        $termino = $data_evento." 23:59:59";
+
+        $sql  = " SELECT h.data_inicio as inicio, h.data_termino as fim, ";
+        $sql .= " e.id, e.nome, t.nome as tipo, s.nome as local ";
+        $sql .= " FROM tb_horarioEvento h inner join tb_evento e ";
+        $sql .= " on h.evento_id = e.id inner join tb_tipoEvento t ";
+        $sql .= " on t.id = e.tipo_evento_id inner join tb_sala s ";
+        $sql .= " on s.id = h.sala_id ";
+        $sql .= " WHERE (h.data_inicio >= \"".$inicio."\" AND h.data_inicio < \"".$termino."\") ";
+        //$sql .= " OR (h.data_inicio < \"".$inicio."\" AND h.data_termino >= \"".$termino."\") ";
+        $sql .= " ORDER BY h.data_inicio ASC ";
+
+
+        $query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
+        $eventosArray = array();
+        while($row = mysqli_fetch_array($query, MYSQLI_ASSOC)) {
+            $inicio = new DateTime($row["inicio"]);
+            $fim = new DateTime($row["fim"]);
+            array_push($eventosArray, array("id" => $row["id"]
+                                        , "nome" => utf8_encode($row["nome"])
+                                        , "inicio" => $inicio->format('H:i')
+                                        , "fim" => $fim->format('H:i')
+                                        , "tipo" => utf8_encode($row["tipo"])
+                                        , "local" => utf8_encode($row["local"])));
+        }
+        return json_encode($eventosArray);
+    }
+
     if($acao == "inscricao1") {
         $evento_id = $_GET["id"];
         $usuario_id = $_SESSION["usuarioId"];
@@ -369,6 +415,8 @@
         }
     } elseif ($acao == "listByDateTime"){
         echo listaPorDataHorario($_GET["begin"], $_GET["end"]);
+    } elseif ($acao =="listaEventosPorData"){
+        echo listaEventosPorData($_GET["data"]);
     } elseif ($acao == "inscricao") {
         $result = inscrever($_GET["evento_id"], $_GET["usuario_id"]);
         //header("location:../evento.php?data=".$result); 
@@ -386,10 +434,12 @@
         echo listarMeusEventos($_GET["usuario_id"]);
     } elseif($acao=="removeInscricao"){
         echo cancelarInscricao($_GET["evento_id"], $_GET["usuario_id"]);
+    } elseif($acao=="inscrito"){
+        echo isInscrito($_GET["evento_id"],$_GET["usuario_id"]);
     } elseif ($acao=="teste") {
         $evento_id = $_GET["evento_id"];
         $usuario_id = $_GET["usuario_id"];
-        isHorarioDisponivel($evento_id, $usuario_id);
+        isInscrito($evento_id, $usuario_id);
 //         echo listarDatasInscricoes($usuario_id);
     }
 

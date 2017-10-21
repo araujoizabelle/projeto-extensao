@@ -8,9 +8,11 @@ session_start();
 
 if(isset($_SESSION['usuarioId'])== null){
   unset($_SESSION['login']);
-  unset($_SESSION['senha']);
+  unset($_SESSION['nome']);
   header('location:index.html');
 }
+
+//echo "usuario da sessao = ".$_SESSION['usuarioId'];
 
 ?>
 
@@ -18,7 +20,7 @@ if(isset($_SESSION['usuarioId'])== null){
 <html>
 <head>
   <meta charset="utf-8"/>
-  <link rel="stylesheet" type="text/css" href="./js/plugins/calendar-plugin.css" />
+  <link rel="stylesheet" type="text/css" href="./js/plugins/calendar-plugin-novo.css" />
   <link rel="stylesheet" href="./css/grid/desktop.css">
   <link rel="stylesheet" href="./font/css/font-awesome.min.css" />
   <link rel="stylesheet" type="text/css" href="./js/bootstrap.min.css"/>
@@ -37,8 +39,6 @@ if(isset($_SESSION['usuarioId'])== null){
           var opcoes = {qtdLinhas: 14
                     , horaInicial: 8
                     , salas: dataEventosArray};
-
-console.log(opcoes);
 
           $(".calendar").calendar(opcoes);            
         });
@@ -75,6 +75,9 @@ console.log(opcoes);
 
   </script>
     <style>
+      main {
+        width: 760px;
+      }
         .calendar {
             margin:0 auto;
             width: 700px;
@@ -120,7 +123,7 @@ console.log(opcoes);
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header modal-info">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Semana de Extensão 2017 - Confirmação de Desistência</h4>
       </div>
@@ -128,7 +131,7 @@ console.log(opcoes);
         <p>Deseja desistir de sua inscrição no evento "<span></span>"?</p>
       </div>
       <div class="modal-footer">
-        <button class="buttonDesistir" class="btn btn-danger" data-dismiss="modal" >Confirmar</button>
+        <button type="button" class="buttonDesistir btn btn-danger"  data-dismiss="modal" >Confirmar</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
@@ -137,69 +140,3 @@ console.log(opcoes);
 </div>
 </body>
 </html>
-<!--
-
-   	<script>
-   		$(function() {
-   			var url = "./controller/calendario_ctrl.php";
-        var params = {"act": "list"};
-   			var $xhr = $.get(url, params);
-
-   			$xhr.done(function(data) {
-   				var dataEventosArray = JSON.parse(data);
-          
-   				var dia = null;
-          $.each(dataEventosArray, function(index, dataEvento){
-            
-   					var $horario = $("<tr/>");
-            var $evento = $("<td />");
-            $.each(dataEvento.eventos, function(index, evento){
-              $evento
-                .append($("<div/>")
-                  .append($("<a/>")
-                    .attr("href","evento.php?act=get&evento_id="+evento.evento_id)
-                    .text(evento.evento_nome))
-                  .append($("<span/>").text(evento.evento_tipo))
-                  .append($("<div />").addClass("detalhes").text("+"))
-                  );
-            });
-
-            $horario
-              .append($("<th/>").text(dataEvento.hora_inicio + " - " + dataEvento.hora_termino))
-              .append($evento);
-            if(dia == null || dia != dataEvento.data) {
-              dia = dataEvento.data;
-              $(".eventos")
-                .append($("<tr />")
-                  .append($("<th />").attr("colspan", "4")
-                    .text(dataEvento.data)
-                  )
-                );
-            }
-            $(".eventos").append($horario);	
-   				});
-   				
-          
-   			});
-
-   			$xhr.fail(function(data){
-   				console.log(data);
-   			})
-   			
-   		})
-   		
-   	</script>
-    
-  </head>
-  <body class="fadeIn">
-    <table class="eventos">
-    	<tr>
-    		<th>Horário</th>
-    		<th>Evento</th>
-    		<th colspan="2"></th>
-    	</tr>
-    </table>
-  </body>
-</html>
-
--->

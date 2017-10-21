@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<!-- saved from url=(0077)http://localhost/projeto-extensao/extensao/folha.php?evento_id=1&horario_id=1 -->
+<html><script id="tinyhippos-injected">if (window.top.ripple) { window.top.ripple("bootstrap").inject(window, document); }</script><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>Programação</title>
+<!--
+    <link rel="stylesheet" href="./css/reset.css">
+-->
+    <link rel="stylesheet" href="./Programação_files/desktop.css">
+    <link rel="stylesheet" href="./Programação_files/font-awesome.min.css">
+
+    <script src="./Programação_files/jquery.min.js"></script>
+
+    <script src="./Programação_files/grid.js"></script>
+
+    <script>
+        
+        $(function(){
+            function getUrlVars() {
+                var vars = [], hash;
+                var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+                for(var i = 0; i < hashes.length; i++) {
+                    hash = hashes[i].split('=');
+                    vars.push(hash[0]);
+                    vars[hash[0]] = hash[1];
+                }
+                return vars;
+            }
+
+            //posicionarHeader();
+            var vars = getUrlVars();
+            var evento_id = vars["evento_id"];
+            var horario_id = vars["horario_id"];
+            console.log(horario_id);
+            var servico = "./controller/folha_ctrl.php?act=gerarFolha&evento_id=";
+            servico += "evento_id="+evento_id+"&horario_id="+horario_id;
+            /*
+            var params = {act:"gerarFolha"
+                       ,"evento_id": evento_id
+                       ,"horario_id": horario_id};
+            */
+            $.get(servico)
+                .done(function(data){
+                    console.log(data);
+            });
+
+            $(".logout_but").click(onButtonLogoutClick);
+            //$('.slide').click(onSlideClick);
+
+        });
+    </script>
+    <style>
+        * {
+           // border: #000 solid 1px;
+        }
+        body {
+            background-color: #fff;
+        }
+        table {
+            width: 90vw;
+            border: #000 solid 1px;
+        }
+        
+        .logo-cefet{
+            width: 17vw;
+        }
+        .logo-extensao {
+            width: 22vw;
+        }
+        
+        thead th h1, thead th h4 {
+            width: 80vw;
+            margin:5px 0;
+        }
+        thead th h1 {
+            font-size: 1.5em;
+        }
+        thead th h4 {
+            font-weight:normal;
+            font-style: italic;
+        }
+        .cabecalho {
+            border-bottom: #000 solid 3px;
+        }
+        .cabecalho td {
+            width: 17vw;
+        }
+        .cabecalho img {
+            margin-bottom: 20px;
+        }
+        
+        .evento th, .evento-detalhes th {
+            text-align: right;
+        }
+        .evento th, .evento td, .evento-detalhes th, .evento-detalhes td {
+            border-top: #000 solid 1px;
+            //border-bottom: #000 solid 1px;
+            padding: 10px;
+        }
+        .evento td {
+            text-align: center;
+            font-weight: bold;
+        }
+        .evento-responsavel {
+            width: 200px;
+        }
+        .evento-hora {
+            width: 50px
+        }
+        
+        .evento-hora~td {
+            text-align: center;
+            width: 80px    
+        }
+        tbody td, tbody th {
+            border: #000 solid 1px;
+        }
+        .participante-nome{
+            width: 60vw;
+        }
+        .participante-matricula{
+            width: 20vw;
+        }
+        .participante-assinatura{
+            width: 60vw;
+        }
+        
+    </style>
+</head>
+<body>
+    <table>
+    <thead>
+        <tr class="cabecalho">
+            <td>
+                <img src="./Programação_files/logo_preto.png" class="logo-cefet">
+            </td>
+            <th colspan="5">
+                <h1>
+                    Centro Federal de Educação Tecnológica Celso Suckow da Fonseca (CEFET/RJ)
+                </h1>
+                
+                <h4>Campus Nova Friburgo</h4>
+                <img src="./Programação_files/logo_extensao.png" class="logo-extensao">
+            </th>
+        </tr>
+        <tr class="evento">
+            <th>Evento:</th>
+            <td colspan="5" class="evento-nome">MODELAGEM DE PROCESSOS DE NEGÓCIO UTILIZANDO O BIZAGI</td>
+        </tr>
+        <tr class="evento-detalhes">
+            <th>Responsável:</th><td class="evento-responsavel">Rafael Elias de Lima Escalfoni</td>
+            <th class="evento-hora">Data:</th><td>23/10/2017</td>
+            <th class="evento-hora">Hora:</th><td>13:00 - 17:00</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <th class="participante-nome">Nome</th>
+            <th class="participante-matricula">Matrícula</th>
+            <th class="participante-assinatura">Assinatura</th>
+        </tr>
+        <tr>
+            <td>João José da Silva Pereira da Silveira</td>
+            <td></td>
+            <td></td>
+        </tr>
+    </tbody>
+    </table>
+
+</body></html>

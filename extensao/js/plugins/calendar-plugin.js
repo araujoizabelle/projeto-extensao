@@ -34,7 +34,7 @@
 		var fimMinuto = horaFinalEvento*60 + minutoFinalEvento;
 		var duracao = (fimMinuto - inicioMinuto);
 		// o titulo das salas têm 30px; por isso desconto aqui
-		var topo = 30 + minutoInicialEvento + (horaInicialEvento - horaInicialGrade) * alturaPadrao;
+		var topo = 72 + minutoInicialEvento + (horaInicialEvento - horaInicialGrade) * alturaPadrao;
 		
 		var $eventosArray = $(".calendar-event");
 		$evento.css({top: topo, height: duracao});

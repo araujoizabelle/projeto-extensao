@@ -22,21 +22,15 @@ function carregarPagina(){
             $.each(dataArray, function(i, obj){
                 var seletor = obj.split("-")[2];
                 carregaGridDia($("div[data-dia="+seletor+"]"), obj, intervalo);
-            });
+        });
     });
 }
 
 function carregarEventos($div, inicio, fim) {
     var servico = "./controller/evento_ctrl.php";
     var params = {"act": "listByDateTime", "begin": inicio, "end":fim};
-
-//console.log(servico+"?act=listByDateTime&begin="+inicio+"&end="+fim);
-
     $.get(servico, params).done(function(data){
         var eventosArray = JSON.parse(data);
-
-//console.log(eventosArray);
-
         $.each(eventosArray,function(index, evento){
             $div
                 .append($("<div/>")
@@ -95,10 +89,13 @@ function carregaGridDia($div, data, intervalo) {
     //passo 1 identificar até que horas haverá eventos iniciando
     var servico = "./controller/horario_ctrl.php";
     var params = {act: "getHourLastEvent", date: data};
+//console.log("getHourLastEvent do dia " + data);
 
     $.get(servico, params).done(function(data){
         //retirando as aspas do data;
         var horarioTermino = parseInt(data.substring(1, data.length-1));
+
+//console.log("hora de termino do dia " + diaDoMes + ": "+horarioTermino);
 
         for(var i=8; i<horarioTermino; i+=intervalo) {
             var dataStr = ano+"-"+(mes+1)+"-"+diaDoMes;

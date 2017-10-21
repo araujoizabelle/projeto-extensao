@@ -15,13 +15,16 @@
     	fechar($conexao);
     	return $result;
     }
+
     function logout() {
-        unset($_SESSION['usuarioId']);
-        unset($_SESSION['login']);
-        unset($_SESSION['senha']);
-        unset($_SESSION['nome']);
+        session_unset($_SESSION['usuarioId']);
+        session_unset($_SESSION['login']);
+        session_unset($_SESSION['nome']);
+        //session_unset($_SESSION);
+
         session_destroy();
     }
+    
     function cadastrar($nome, $email, $senha) {
     	$conexao = abrir();
 

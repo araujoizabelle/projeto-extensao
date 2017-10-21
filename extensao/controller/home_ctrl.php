@@ -65,7 +65,7 @@ function getTipo($id) {
 
 	function listaEventos(){
 		$conexao = abrir();
-		$sql = "SELECT * FROM tb_tipoEvento";
+		$sql = "SELECT * FROM tb_tipoEvento ";
         $query = mysqli_query($conexao, $sql) or die ("Deu erro na query: ".$sql.' '.mysqli_error($conexao));
 
         $result_str = '{"programacao": [';

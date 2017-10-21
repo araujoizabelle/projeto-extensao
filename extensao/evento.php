@@ -1,15 +1,12 @@
 <?php
 
-	session_start();
+    session_start();
 
-    if($_SESSION['usuarioId']== null){
+    if((!isset ($_SESSION['login']) == true) &&($_SESSION['usuarioId']== null)){
         unset($_SESSION['login']);
-        unset($_SESSION['senha']);
         unset($_SESSION['nome']);
         header('location:index.html');
     }
-
-	$evento_id = $_GET["id"];
 
 ?>
 <!-- Essa página será preenchida com dados de cada evento! -->
@@ -24,97 +21,57 @@
 	<link rel="stylesheet" type="text/css" href="./js/plugins/message-plugin.css" />
 	<link rel="stylesheet" type="text/css" href="./js/bootstrap.min.css"/>
 
-   <link href="https://fonts.googleapis.com/css?family=Monda:700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Monda:700" rel="stylesheet">
 	<link rel="stylesheet" href="./css/grid/desktop.css">
 
 	<script src="./js/jquery.min.js"></script>
-	<script src="./js/controller/grid.js"></script>
-	<script src="./js/controller/evento.js"></script>
-	<script src="./js/plugins/message-plugin.js"></script>
 	<script src="./js/bootstrap.min.js"></script>
+    <script src="./js/plugins/message-plugin.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/controller/grid.js"></script>
+	<script src="./js/controller/evento.js"></script>
+	
 	<script>
 		$(function(){
-			function getUrlVars() {
-				var vars = [], hash;
-				var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
-				for(var i = 0; i < hashes.length; i++) {
-					hash = hashes[i].split('=');
-					vars.push(hash[0]);
-					vars[hash[0]] = hash[1];
-				}
-				return vars;
-			}
-
 			var vars = getUrlVars();
+            var evento_id = vars["id"];
+			var usuario_id = $("#usuario_id").val();
 
-
-			if (vars["act"]=="get") {
-				var evento_id = vars["id"];
-				$.get("./controller/evento_ctrl.php?act=get&id="+evento_id).done(function(data){
-					var evento = JSON.parse(data);
-console.log("evento ");
-console.log(evento);
-					//configurando folha de estilo
-					setFolha(evento.tipo);
-					$(".tipo_evento h3").text(evento.tipo);
-					$(".info_evento h2").text(evento.nome);
-					$(".modal-body span").text(evento.nome);
-					$(".info_evento h3").text(evento.horarios[0].sala);
-					$(".description p").html(evento.descricao);
-					$(".buttonInscrever").attr("data-evento-id", evento_id);
-
-          $.each(evento.horarios, function(index, horario){
-            var dataStr = horario.data_inicio.split(" ")[0];
-            var horaInicioArray = horario.data_inicio.split(" ")[1].split(":");
-            var horaInicioStr = horaInicioArray[0]+":"+horaInicioArray[1];
-            var dataFormatada = dataStr.split("-")[2]+"/"+dataStr.split("-")[1]; 
-            var horaFimArray = horario.data_termino.split(" ")[1].split(":");
-            var horaFimStr = horaFimArray[0]+":"+horaFimArray[1];
-            //<li>Dia 23/10, 8:00 às 12:00</li>
-            $(".horarios ul")
-              .append($("<li />")
-                .text("Dia "+dataFormatada+", de "+horaInicioStr+" às "+horaFimStr));
-console.log(horario);
-
-          });
-
-					$.each(evento.autores, function(ind, autor){
-						var foto = (autor.foto!="")?autor.foto:"./img/perfilpadrao.jpg";
-						$("main")
-							.append($("<section />")
-								.addClass("palestrante")
-								.append($("<img />")
-									.attr({"src": foto, "alt": "Foto do participante "+autor.nome}))
-								.append($("<article />").addClass("bioPalestrante")
-									.append($("<h3/>").text(autor.nome))
-									.append($("<p/>").text(autor.bio))
-									.append($("<h4/>").text(autor.lattes))
-								)
-							);
-					});
-				});	
+            if (vars["act"]=="get") {
+                carregaEvento(evento_id); 
 			} 
-
-			$(".logout_but").click(function(){
-	          $.get("./controller/usuario_ctrl.php?act=logout")
-	            .done(function(data){
-	              window.location.href = "index.html";
-	          });
-	        });
-
+                 
 			$(".buttonInscrever").click(function(){
-				var eventoId = $(this).attr("data-evento-id");
-				var servico = "./controller/evento_ctrl.php";
-				var params = { "act": "inscricao"
-							, "evento_id": eventoId
-							, "usuario_id": <?php echo $_SESSION['usuarioId'];?> };
-						
-				$.get(servico, params)
-					.done(geraMensagem)
-					.fail(geraMensagem);
-			
-			});
+                var eventoId = $(this).attr("data-evento-id");
+                var servico = "./controller/evento_ctrl.php";
+                var params = { "act": "inscricao"
+                        , "evento_id": evento_id
+                        , "usuario_id": usuario_id };
 
+                $.get(servico, params)
+                    .done(geraMensagem)
+                    .fail(geraMensagem);
+            });
+
+            $(".buttonDesistir").click(function(){
+                var servico = "./controller/evento_ctrl.php";
+                var params = {act:"removeInscricao"
+                            , evento_id: evento_id
+                            , usuario_id: usuario_id };
+                $.get(servico, params)
+                    .done(function(data){
+                        window.location.href="evento.php?act=get&id="+evento_id;
+                });
+            });
+
+            $(".logout_but").click(function(){
+                $.get("./controller/usuario_ctrl.php?act=logout")
+                    .done(function(data){
+                    window.location.href = "index.html";
+                });
+            });
+
+            configuraBotaoInscricao(evento_id,usuario_id);
 			posicionarHeader();
         
 	        $('.slide').click(function() {
@@ -126,6 +83,7 @@ console.log(horario);
 	</script>
 </head>
 <body class="fadeIn">
+  <input type="hidden" id="usuario_id" value="<?php echo $_SESSION['usuarioId'];?>"/>
 	<header class="header">
         <form class="header-form" method="post">
             <input type="hidden" name="logout" value="ok">
@@ -157,7 +115,6 @@ console.log(horario);
     </div>
 -->
 	<main class="main">
-		<div class="message"></div>
 		<section class="evento">
             <div class="tipo_evento">
                 <h3><!---tipo do evento--></h3>
@@ -165,25 +122,27 @@ console.log(horario);
 		  <div class="info_evento">
 			<h2>NOME</h2>
 			<h3>SALA</h3>
-			<button type="button" class="btn btn-primary btn-custom" data-toggle="modal" data-target="#myModal">Inscreva-se!</button>
+
+			<button id="inscricao" type="button" > </button>
 
             
 		  </div>
     </section>
     <div class="horarios">
-			<ul></ul>
+        <div class="message"></div>
+		<ul></ul>
     </div>	
     <div class="description">
 			<p></p>
     </div>	
 	</main>
 
-<div id="myModal" class="modal fade" role="dialog">
+<div id="modalInscricao" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header modal-info">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Semana de Extensão 2017</h4>
       </div>
@@ -191,19 +150,37 @@ console.log(horario);
         <p>Confirma a inscrição no evento "<span></span>" ?</p>
       </div>
       <div class="modal-footer">
-      	<button class="buttonInscrever" data-dismiss="modal">Inscrever-se</button>
+      	<button type="button" class="buttonInscrever btn btn-primary" data-dismiss="modal">Inscrever-se</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
 
   </div>
 </div>
-<div id="modalSucesso" class="modal fade" role="dialog">
+<div id="modalCancelamento" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header modal-info">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Semana de Extensão 2017 - Confirmação de Desistência</h4>
+      </div>
+      <div class="modal-body">
+        <p>Deseja desistir de sua inscrição no evento "<span></span>"?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="buttonDesistir btn btn-danger" data-dismiss="modal" >Confirmar</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+
+  </div>
+<div id="modalSucesso" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header modal-info">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
         <h4 class="modal-title">Semana de Extensão 2017</h4>
       </div>
