@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-	<title>4</title>
+	<title></title>
 </head>
 <body>
 	<h1>Nome:</h1>

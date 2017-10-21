@@ -2,7 +2,7 @@
 /* esse bloco de código em php verifica se existe a sessão, pois o usuário pode simplesmente não fazer o login e digitar na barra de endereço do seu navegador o caminho para a página principal do site (sistema), burlando assim a obrigação de fazer um login, com isso se ele não estiver feito o login não será criado a session, então ao verificar que a session não existe a página redireciona o mesmo para a index.php.
 */
 
-header('Content-type: text/html; charset=utf-8'); 
+header('Content-type: text/html; charset=utf-8');
 
 session_start();
 
@@ -17,6 +17,7 @@ if(isset($_SESSION['usuarioId'])== null){
 ?>
 
 <!doctype html>
+
 <html>
 <head>
   <meta charset="utf-8"/>
@@ -85,58 +86,51 @@ if(isset($_SESSION['usuarioId'])== null){
     </style>
 </head>
 <body class="fadeIn">
+ 
     <input type="hidden" id="usuario_id" value="<?php echo $_SESSION['usuarioId'];?>"/>
     <header class="header">
-        <form class="header-form" method="post">
-            <input type="hidden" name="logout" value="ok">
-            <a class="escricoes_but" href="grid.php">Toda a Programação</a>
-            <button class="logout_but">Logout</button>
-        </form>
-        <div class="header-texts">
-            <h1 class="header-school">CEFET/RJ - Campus Nova Friburgo</h1>
-            <p class="usuario_name">
-                <?php echo substr($_SESSION["nome"],0,27);?>
-            </p>
-        </div>
-        <div class="header-logo">
-            <img class="header-logo-img" src="./img/logo_extensao.png" alt="logo">
-        </div>
+      <form class="header-form" method="post">
+        <input type="hidden" name="logout" value="ok">
+        <a class="escricoes_but" href="grid.php">Toda a Programação</a>
+        <button class="logout_but">Logout</button>
+      </form>
+      <div class="header-texts">
+        <h1 class="header-school">CEFET/RJ - Campus Nova Friburgo</h1>
+        <p class="usuario_name">
+          <?php echo substr($_SESSION["nome"],0,27);?>
+        </p>
+      </div>
+      <div class="header-logo">
+          <img class="header-logo-img" src="./img/logo_extensao.png" alt="logo">
+      </div>
     </header>
-    
-    <div class="partition">
-        <ul class="partition-nav">
-            <h1 class="partition-h1">Programação Do Evento</h1>
-            <li><a class="slide" href="grid.php#segunda-feira">Segunda-feira</a></li>
-            <li><a class="slide" href="grid.php#terça-feira">Terça-feira</a></li>
-            <li><a class="slide" href="grid.php#quarta-feira">Quarta-feira</a></li>
-            <li><a class="slide" href="grid.php#todos-os-dias">Todos os dias</a></li>
-        </ul>
+    <div class="title-page">
+      <h1 class="title">Suas Inscrições</h1>
     </div>
     <main class="content">
-        <div class="calendar"></div>
-        <div class="message"></div>
+      <div class="calendar"></div>
+      <div class="message"></div>
     </main>
-    
 
-  <div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+    <!-- MODAL -->
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header modal-info">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Semana de Extensão 2017 - Confirmação de Desistência</h4>
-      </div>
-      <div class="modal-body">
-        <p>Deseja desistir de sua inscrição no evento "<span></span>"?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="buttonDesistir btn btn-danger"  data-dismiss="modal" >Confirmar</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+    <div id="myModal" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Semana de Extensão 2017 - Confirmação de Desistência</h4>
+          </div>
+          <div class="modal-body">
+            <p>Deseja desistir de sua inscrição no evento "<span></span>"?</p>
+          </div>
+          <div class="modal-footer">
+            <button class="buttonDesistir" class="btn btn-danger" data-dismiss="modal" >Confirmar</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+          </div>
+        </div>
       </div>
     </div>
+  </body>
 
-  </div>
-</div>
-</body>
 </html>

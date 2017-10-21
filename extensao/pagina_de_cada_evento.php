@@ -6,6 +6,7 @@
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="./css/tipo_evento/evento.css">
 	<link rel="stylesheet" type="text/css" href="./css/tipo_evento/palestra.css"> <!--Aqui será colocada a folha de estilo do evento específico-->
+    <link rel="icon" type="image/png" href="./img/favicon.png">
 	<link rel="stylesheet" href="./css/font-awesome-4.7.0/css/font-awesome.min.css">
    <link href="https://fonts.googleapis.com/css?family=Monda:700" rel="stylesheet"><!-- Trocar para a Gotham medium ou bold pro header e Roboto mono pro corpo do texto  -->
 	<script src="./js/jquery.min.js"></script>

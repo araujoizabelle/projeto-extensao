@@ -13,11 +13,11 @@
 							.attr("id", "evento_"+evento.id)
 							.attr("data-termino", evento.horario_fim)
 							.text(evento.nome));
-		
+
 		$evento
-			.append($("<div />")
-				.addClass("remove").html("&times;")
-				.attr({"data-toggle":"modal","data-target": "#myModal"}));
+			.append($("<i />")
+				.addClass("remove fa fa-trash")
+				.attr({"data-toggle":"modal","data-target": "#myModal", "aria-hidden":"true"}));
 		//a altura padrão das grids está configurada para 60px;
 		var alturaPadrao = 60;
 
@@ -32,18 +32,18 @@
 
 		var inicioMinuto = horaInicialEvento*60 + minutoInicialEvento;
 		var fimMinuto = horaFinalEvento*60 + minutoFinalEvento;
-		var duracao = (fimMinuto - inicioMinuto);
+		var duracao = (fimMinuto - inicioMinuto) - 1;
 		// o titulo das salas têm 30px; por isso desconto aqui
 		var topo = 72 + minutoInicialEvento + (horaInicialEvento - horaInicialGrade) * alturaPadrao;
-		
+
 		var $eventosArray = $(".calendar-event");
 		$evento.css({top: topo, height: duracao});
 		//calculando número de caracteres proporcional ao tamanho da caixa
 		var numMaxCaracteres = (parseInt($evento.css("height"))/30)*20;
 		if($evento.children("p").text().length>numMaxCaracteres) {
-			$evento.children("p").text($evento.children("p").text().substr(0,numMaxCaracteres)+"...");	
+			$evento.children("p").text($evento.children("p").text().substr(0,numMaxCaracteres)+"...");
 		}
-		
+
 		return $evento;
 	}
 
@@ -68,21 +68,21 @@
 			var dataArray = sala.data.split("-");
 			var dataDt = new Date(dataArray[0], (dataArray[1]-1), dataArray[2]);
 			var $calendarRoom = $("<div/>")
-									.addClass("calendar-room")	
+									.addClass("calendar-room")
 									.append($("<div />")
 										.addClass("calendar-room-title")
 										.text(getDiaSemana(dataDt)+ " "+dataArray[2]+"/"+dataArray[1])
 									);
-			
+
 			for(var i=0; i<numLinhas;i++){
 				$calendarRoom.append($("<div />").addClass("calendar-grid"));
 			}
 			sala.programacao.forEach(function(evento){
 				$calendarRoom.append(criaEvento(evento, horaInicial));
-			});	
+			});
 			$bodyGrid.append($calendarRoom);
 		})
-		return $bodyGrid;	
+		return $bodyGrid;
 	}
 
 	function getDiaSemana(dataCompleta) {
@@ -97,12 +97,12 @@
 		}
 	}
 
-	
+
 	$.fn.calendar = function(options){
 
 		var numLinhas = options.qtdLinhas;
 		var horaInicial = options.horaInicial;
-		$(this)			
+		$(this)
 			.append($("<div />").addClass("calendar-body")
 				.append(carregarGridHoras(options.qtdLinhas, options.horaInicial))
 				.append(carregarSalas(options.salas, options.qtdLinhas, options.horaInicial)));
@@ -117,7 +117,7 @@
 			var nomeEvento = $(this).parent().children(".calendar-event p").text();
 			$(".modal-body span").text(nomeEvento);
 			$(".buttonDesistir").attr("data-evento", $(this).parent().children(".calendar-event p").attr("id"))
-			
+
 		})
 	}
 

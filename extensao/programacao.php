@@ -2,9 +2,9 @@
 <!doctype html>
 <html>
 <head>
-	<title>3</title>
 	<meta charset="utf-8" />
     <title>Evento</title>
+    <link rel="icon" type="image/png" href="./img/favicon.png">
     <link rel="stylesheet" href="./css/reset.css" />
     <script src="./js/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="./js/plugins/message-plugin.css" />

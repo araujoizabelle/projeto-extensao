@@ -17,6 +17,7 @@
 	<title>Eventos</title>
 	<link rel="stylesheet" type="text/css" href="./css/tipo_evento/evento.css">
 	<link rel="stylesheet" type="text/css" id="folha"/> <!--Aqui será colocada a folha de estilo do evento específico-->
+    <link rel="icon" type="image/png" href="./img/favicon.png">
 	<link rel="stylesheet" href="./css/font-awesome-4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" href="./js/plugins/message-plugin.css" />
 	<link rel="stylesheet" type="text/css" href="./js/bootstrap.min.css"/>
