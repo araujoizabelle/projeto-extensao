@@ -12,36 +12,13 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Programação</title>
+    <title>Gerar Folha de Presença</title>
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/grid/desktop.css">
+    <link rel="stylesheet" href="./css/gerar_folha.css">
     <link rel="stylesheet" href="./font/css/font-awesome.min.css">
+    <link rel="icon" type="image/png" href="./img/favicon.png">
     <script src="./js/jquery.min.js"></script>
-    <style>
-        label {
-            display: block;
-            margin:10px 0 0;
-            font-weight: bold;
-        }
-        select {
-            padding: 3px;
-            font-size: 1.2em;
-            width: 600px;
-        }
-        button {
-            display: block;
-            font-size: 1em;
-            padding: 10px;
-            margin: 20px auto;
-        }
-        .form-folha {
-            width: 800px;
-            margin: 0 auto;
-            border: #888 solid 1px;
-            padding: 15px;
-            box-sizing: border-box;
-        }
-    </style>
     <script src="./js/controller/grid.js"></script>
 
     <script>
@@ -68,7 +45,7 @@
                 .done(function(data){
 
                     var dataArray = JSON.parse(data);
-                    
+
                     $("#horario_id").empty();
 
                     $.each(dataArray, function(index, dataEvento) {
@@ -113,23 +90,19 @@
 
         <div class="partition">
             <ul class="partition-nav">
-                <h1 class="partition-h1">Programação Do Evento</h1>
-                <li><a class="slide" href="grid.php#segunda-feira">Segunda-feira</a></li>
-                <li><a class="slide" href="grid.php#terça-feira">Terça-feira</a></li>
-                <li><a class="slide" href="grid.php#quarta-feira">Quarta-feira</a></li>
+                <h1 class="partition-h1">Folha de Presença</h1>
             </ul>
         </div>
         <main class="content">
             <fieldset class="form-folha">
-                <legend>Horário do Evento</legend>
-                <label>Evento:</label>
-                <select id="evento_id" >
+                <label class="evento_id">Evento:</label>
+                <select class="evento_id" >
                     <option value="0">Selecione um Evento</option>
                 </select>
-                <label>Horário:</label>
-                <select id="horario_id"></select>
+                <label class="horario_id">Horário:</label>
+                <select class="horario_id"></select>
                 <button id="gerarFolha">Gerar Folha de Presença</button>
-            </fieldset> 
+            </fieldset>
         </main>
     </body>
 </html>

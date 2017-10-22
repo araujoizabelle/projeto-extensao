@@ -18,7 +18,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <title>Programação</title>
-   <link rel="icon" type="image/png" href="./img/logo_extensao.png">
+    <link rel="icon" type="image/png" href="./img/favicon.png">
     <link rel="stylesheet" href="./css/reset.css">
     <link rel="stylesheet" href="./css/grid/desktop.css">
     <link rel="stylesheet" href="./font/css/font-awesome.min.css">
@@ -30,9 +30,9 @@
       $(function(){
         posicionarHeader();
         carregarPagina();
-        
+
         $(".logout_but").click(onButtonLogoutClick);
-        
+
         $("main").on("click", ".event", onEventClick);
         $("main").on("mouseover",".event",onEventOver);
         $("main").on("mouseleave",".event",onEventLeave);
@@ -59,7 +59,7 @@
         <img class="header-logo-img" src="./img/logo_extensao.png" alt="logo">
       </div>
     </header>
-    
+
     <div class="partition">
       <ul class="partition-nav">
         <h1 class="partition-h1">Programação Do Evento</h1>

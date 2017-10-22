@@ -25,11 +25,12 @@ if(isset($_SESSION['usuarioId'])== null){
   <link rel="stylesheet" href="./css/grid/desktop.css">
   <link rel="stylesheet" href="./font/css/font-awesome.min.css" />
   <link rel="stylesheet" type="text/css" href="./js/bootstrap.min.css"/>
+  <link rel="icon" type="image/png" href="./img/favicon.png">
   <script src="./js/jquery.min.js"></script>
   <script src="./js/bootstrap.min.js"></script>
   <script src="./js/plugins/calendar-plugin.js"></script>
   <script src="./js/controller/grid.js"></script>
-
+  <title>Suas Inscrições</title>
   <script>
     $(function(){
         var url = "./controller/evento_ctrl.php?";
@@ -41,10 +42,10 @@ if(isset($_SESSION['usuarioId'])== null){
                     , horaInicial: 8
                     , salas: dataEventosArray};
 
-          $(".calendar").calendar(opcoes);            
+          $(".calendar").calendar(opcoes);
         });
 
-        
+
         $(".buttonDesistir").click(function(){
             var servico = "./controller/evento_ctrl.php";
             var evento_id = $(this).attr("data-evento").substr(7);
@@ -58,13 +59,13 @@ if(isset($_SESSION['usuarioId'])== null){
         })
 
         posicionarHeader();
-        
+
         $('.slide').click(function() {
             $doc.animate({
                 scrollTop: $( $.attr(this, 'href') ).offset().top
             }, 750);
         });
-        
+
         $(".logout_but").click(function(){
           $.get("./controller/usuario_ctrl.php?act=logout")
             .done(function(data){
@@ -86,7 +87,7 @@ if(isset($_SESSION['usuarioId'])== null){
     </style>
 </head>
 <body class="fadeIn">
- 
+
     <input type="hidden" id="usuario_id" value="<?php echo $_SESSION['usuarioId'];?>"/>
     <header class="header">
       <form class="header-form" method="post">

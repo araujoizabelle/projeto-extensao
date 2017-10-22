@@ -12,11 +12,12 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>Programação</title>
+    <title>Folha</title>
 <!--
     <link rel="stylesheet" href="./css/reset.css">
 -->
     <link rel="stylesheet" href="./css/grid/desktop.css">
+    <link rel="icon" type="image/png" href="./img/favicon.png">
     <link rel="stylesheet" href="./font/css/font-awesome.min.css">
     <link rel="stylesheet" href="./css/folha.css"/>
     <script src="./js/jquery.min.js"></script>
@@ -25,7 +26,7 @@
     <script src="./js/controller/grid.js"></script>
 
     <script>
-        
+
         $(function(){
             var vars = getUrlVars();
             var evento_id = vars["evento_id"];
@@ -64,13 +65,9 @@ console.log(data);
         <tr class="cabecalho">
             <td>
                 <img src="./img/logo_preto.png" class="logo-cefet"/>
+                <h4>Campus Nova Friburgo</h4>
             </td>
             <th colspan="5">
-                <h1>
-                    Centro Federal de Educação Tecnológica Celso Suckow da Fonseca (CEFET/RJ)
-                </h1>
-                
-                <h4>Campus Nova Friburgo</h4>
                 <img src="./img/logo_extensao.png" class="logo-extensao"/>
             </th>
         </tr>
@@ -87,7 +84,7 @@ console.log(data);
     </table>
 
     <h3>Participantes</h3>
-    
+
     <table class="participantes">
     <tbody>
         <tr>

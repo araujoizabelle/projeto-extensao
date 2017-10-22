@@ -1,0 +1,43 @@
+.form-folha{
+  width: 800px;
+  height: 250px;
+  margin: 0 auto;
+  border: #888 solid 1px;
+  padding: 15px;
+  box-sizing: border-box;
+  position: relative;
+}
+.partition{
+  height: 150px;
+}
+label{
+  background-color: rgb(40, 45, 78);
+  color: #fff;
+  padding: 20px;
+}
+select{
+  width: 620px;
+  padding: 19px;
+  left: 109px;
+}
+
+.evento_id{
+  position: absolute;
+  top: 20px;
+}
+.horario_id{
+  position: absolute;
+  top: 90px;
+}
+button{
+  position: absolute;
+  bottom:30px;
+  left: 100px;
+  width: 600px;
+  padding: 15px;
+  background-color: rgb(40, 45, 78);
+  color: #fff;
+  font-size: 1em;
+  border: none;
+  box-shadow: 5px 5px 25px #000;
+}
